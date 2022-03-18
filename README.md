@@ -20,6 +20,8 @@ Unity has a useful tool called the point cache bake tool (Window>Visual Effects>
 This was used to create a point graph of a person which was imported into a custom VFX graph.
 Here's a tutorial explaining most of the process: https://www.youtube.com/watch?v=j1R1Uelroco&t=101s
 
+Note: Point cache bake tool works best with meshes from .obj files. Problems were found using it with .fbx files.
+
 Result:
 https://i.gyazo.com/57d7139cc6e2147305202bb5d32905bc.mp4
 https://i.gyazo.com/11aba9749615c5e4b03e06edf9e3484e.mp4
