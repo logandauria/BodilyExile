@@ -11,7 +11,7 @@ public class VFXTest2 : AudioSyncer
 
 	public Vector3 beatVector;
 	public Vector3 restVector;
-	public float triggerTime;
+	public float triggerTime  = .2f;
 	public bool randomRange;
 
 	private float timer = 0;
