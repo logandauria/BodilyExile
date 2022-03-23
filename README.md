@@ -1,7 +1,7 @@
 # SallyProject
 
 ## Setting up for development
-The unity project uses version 2022.1.0b8 so make sure you download the proper unity installation.
+The unity project uses version 2022.1.0b9 so make sure you download the proper unity installation.
 
 All unity versions can be found here:
 https://unity3d.com/get-unity/download/archive
