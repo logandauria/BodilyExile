@@ -31,7 +31,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d4c867f6b72b714dbb5fd1780afe208, type: 3}
-  m_Name: SphereSync
+  m_Name: SphereSync2
   m_EditorClassIdentifier: 
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 0}
@@ -158,7 +158,7 @@ VisualEffectResource:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SphereSync
+  m_Name: SphereSync2
   m_Graph: {fileID: 114350483966674976}
   m_Infos:
     m_RendererSettings:
@@ -3123,7 +3123,7 @@ MonoBehaviour:
   m_InputSlots:
   - {fileID: 8926484042661614754}
   m_OutputSlots: []
-  m_Disabled: 0
+  m_Disabled: 1
   attribute: color
   Composition: 0
   AlphaComposition: 0
@@ -3186,7 +3186,7 @@ MonoBehaviour:
   m_InputSlots:
   - {fileID: 8926484042661614756}
   m_OutputSlots: []
-  m_Disabled: 1
+  m_Disabled: 0
   attribute: color
   Composition: 0
   AlphaComposition: 0
@@ -3219,7 +3219,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Gradient, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"colorKeys":[{"color":{"r":1.0,"g":0.9972116947174072,"b":0.20000000298023225,"a":1.0},"time":0.10000763088464737},{"color":{"r":1.0,"g":0.2939668595790863,"b":0.0,"a":1.0},"time":0.42352941632270815},{"color":{"r":0.14150941371917725,"g":0.0,"b":0.0,"a":1.0},"time":0.5117723345756531}],"alphaKeys":[{"alpha":0.0,"time":0.0},{"alpha":1.0,"time":0.16176089644432069},{"alpha":1.0,"time":0.8882429003715515},{"alpha":0.0,"time":1.0}],"gradientMode":0}'
+      m_SerializableObject: '{"colorKeys":[{"color":{"r":0.0,"g":1.0,"b":0.9740798473358154,"a":1.0},"time":0.0},{"color":{"r":1.0,"g":1.0,"b":1.0,"a":1.0},"time":0.21176470816135407},{"color":{"r":0.0,"g":0.8207547068595886,"b":0.798224151134491,"a":1.0},"time":0.29411765933036806},{"color":{"r":0.11097566783428192,"g":0.8839395046234131,"b":0.7786898612976074,"a":1.0},"time":0.33823147416114809},{"color":{"r":0.8001105785369873,"g":0.9905620217323303,"b":0.9786959886550903,"a":1.0},"time":0.43529412150382998},{"color":{"r":0.8611111044883728,"g":1.0,"b":0.996399998664856,"a":1.0},"time":0.7000076174736023},{"color":{"r":1.7666199207305909,"g":1.7554504871368409,"b":0.42622047662734988,"a":1.0},"time":0.7058823704719544},{"color":{"r":0.14150941371917725,"g":0.0,"b":0.0,"a":1.0},"time":0.7558861970901489}],"alphaKeys":[{"alpha":0.0,"time":0.0},{"alpha":1.0,"time":0.16176089644432069},{"alpha":1.0,"time":0.8882429003715515},{"alpha":0.0,"time":1.0}],"gradientMode":0}'
     m_Space: 2147483647
   m_Property:
     name: Color
@@ -3638,7 +3638,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661614784}
       inputSlot: {fileID: 8926484042661614658}
-    position: {x: 558.35, y: 618.7675}
+    position: {x: 729, y: 610}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661614784
@@ -3718,7 +3718,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661614786}
       inputSlot: {fileID: 8926484042661614659}
-    position: {x: 587.24664, y: 658.31024}
+    position: {x: 748, y: 650}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661614786
@@ -3798,7 +3798,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661614788}
       inputSlot: {fileID: 8926484042661614660}
-    position: {x: 600.9345, y: 703.93646}
+    position: {x: 716, y: 687}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661614788
