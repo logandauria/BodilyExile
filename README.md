@@ -1,7 +1,7 @@
 # SallyProject
 
 ## Setting up for development
-The unity project uses version 2022.1.0b8 so make sure you download the proper unity installation.
+The unity project uses version 2022.1.0b9 so make sure you download the proper unity installation.
 
 All unity versions can be found here:
 https://unity3d.com/get-unity/download/archive
@@ -25,3 +25,29 @@ Note: Point cache bake tool works best with meshes from .obj files. Problems wer
 Result:
 https://i.gyazo.com/57d7139cc6e2147305202bb5d32905bc.mp4
 https://i.gyazo.com/11aba9749615c5e4b03e06edf9e3484e.mp4
+
+### Editing the VFX forces
+
+![alt text](https://github.com/TeamSally/SallyProject/blob/master/images/vfxtest2.png)
+
+**Bias** - the value threshold for when a beat will occur to music. Higher values are for stronger notes. Range is 0-100  
+**Time Step** - the amount of time required between two beats  
+**Time to Beat** - the amount of time it takes for an effect to trigger  
+**Rest Smooth Time** - the amount of time it takes to revert back to the original state defined by the restVector  
+For the beat and rest vector, the xyz values correlate to the following: (X: intensity, Y: drag, Z: frequency)  
+Intensity is the strength of the force  
+Drag is the directional force (i think lol)  
+Frequency seems to be a preset movement pattern based on the provided value/seed  
+**Beat Vector** - The values that will be set once a beat occurs  
+**Rest Vector** - The default values that the graph goes back to when there are no beats occuring  
+**Random Range** - Will activate functionality for the XYZ values to be randomly selected between a range of the beat vector and rest vector  
+  
+For the orb, there are 2 VFX graphs used so you can change all of the above values for both. They don't have to be the same and will probably look cooler with different values
+
+
+### Creating new point caches from meshes
+
+Import an obj into the assets folder of the project, or select a preexisting one with the point cache bake tool  
+Here's how to open the point cache bake tool:
+
+![alt text](https://github.com/TeamSally/SallyProject/blob/master/images/pointcache.png?raw=true)
