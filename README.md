@@ -41,8 +41,8 @@ Frequency seems to be a preset movement pattern based on the provided value/seed
 **Beat Vector** - The values that will be set once a beat occurs  
 **Rest Vector** - The default values that the graph goes back to when there are no beats occuring  
 **Random Range** - Will activate functionality for the XYZ values to be randomly selected between a range of the beat vector and rest vector  
-
-
+  
+For the orb, there are 2 VFX graphs used so you can change all of the above values for both. They don't have to be the same and will probably look cooler with different values
 
 
 ### Creating new point caches from meshes
