@@ -39,6 +39,7 @@ public class BallMovement : MonoBehaviour
 
     private Vector3 initPos;
     private Vector3 initRot;
+    private Vector3 velocity;
     
 
     // Start is called before the first frame update
@@ -109,9 +110,16 @@ public class BallMovement : MonoBehaviour
             // apply x difference of hands to the scale
             this.transform.localScale = initScale - new Vector3(xDiff,xDiff,xDiff);
 
-            // apply z difference of hands to the rotation
-            Vector3 newRot = new Vector3(0, 4 - zDiff*8, 0);
-            this.transform.eulerAngles += newRot;
+            // apply z difference of hands to the y rotation
+            this.transform.eulerAngles += new Vector3(0, 2 - zDiff * 2, 0);
+        }
+        else if (rightHandOnObject == false && leftHandOnObject == true)
+        {
+            this.transform.position = Vector3.Lerp(this.transform.position, leftHand.transform.position, Time.deltaTime);
+        }
+        else if (rightHandOnObject == true && leftHandOnObject == false)
+        {
+            this.transform.position = Vector3.Lerp(this.transform.position, rightHand.transform.position, Time.deltaTime);
         }
     }
 
