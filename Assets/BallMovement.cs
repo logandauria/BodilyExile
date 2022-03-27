@@ -46,7 +46,7 @@ public class BallMovement : MonoBehaviour
     {
         initPos = this.transform.position;
         initRot = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z);
-
+        initScale = this.transform.localScale;
     }
 
 
@@ -89,8 +89,7 @@ public class BallMovement : MonoBehaviour
         //TurnVehicle();
 
 
-        transform.position = initPos;
-        transform.eulerAngles = new Vector3(initRot.x, initRot.y, transform.eulerAngles.z);
+        //transform.eulerAngles = new Vector3(initRot.x, initRot.y, transform.eulerAngles.z);
     }
 
 
@@ -100,10 +99,18 @@ public class BallMovement : MonoBehaviour
         // Check that both hands are grabbing a snap position on the object
         if (rightHandOnObject == true && leftHandOnObject == true)
         {
-            this.transform.parent = directonalObject;
-            // current hand distances - initial hand distances
-            float diff = Vector3.Distance(initRightHandPos, initLeftHandPos) - Vector3.Distance(rightHand.transform.position, leftHand.transform.position);
-            this.transform.localScale += new Vector3(diff,diff,diff);
+            this.transform.position = (rightHand.transform.position + leftHand.transform.position) / 2;
+
+            // current hand distances - initial hand distances for x and z
+            float xDiff = Mathf.Abs(initRightHandPos.x - initLeftHandPos.x) - Mathf.Abs(rightHand.transform.position.x - leftHand.transform.position.x);
+            float zDiff = Mathf.Abs(initRightHandPos.z - initLeftHandPos.z) - Mathf.Abs(rightHand.transform.position.z - leftHand.transform.position.z);
+
+            // apply x difference of hands to the scale
+            this.transform.localScale = initScale - new Vector3(xDiff,xDiff,xDiff);
+
+            // apply z difference of hands to the rotation
+            Vector3 newRot = new Vector3(0, 4 - zDiff*8, 0);
+            this.transform.eulerAngles += newRot;
         }
     }
 
@@ -152,6 +159,10 @@ public class BallMovement : MonoBehaviour
             rightHand.transform.rotation = rightHandOriginalParent.rotation;
             rightHand.transform.localScale = rightHandOriginalParent.localScale;
             rightHandOnObject = false;
+            // slowly revert to initial pos and scale
+            transform.localScale = Vector3.Lerp(transform.localScale, initScale, Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, initPos, Time.deltaTime);
+
         }
         if (leftHandOnObject && leftController.TryGetFeatureValue(CommonUsages.gripButton, out leftGripped) && !leftGripped)
         {
@@ -160,10 +171,18 @@ public class BallMovement : MonoBehaviour
             leftHand.transform.rotation = leftHandOriginalParent.rotation;
             leftHand.transform.localScale = leftHandOriginalParent.localScale;
             leftHandOnObject = false;
+            // slowly revert to initial pos and scale
+            transform.localScale = Vector3.Lerp(transform.localScale, initScale, Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, initPos, Time.deltaTime);
+
         }
-        if(!leftHandOnObject && !leftHandOnObject)
+        if (!leftHandOnObject && !leftHandOnObject)
         {
             transform.parent = null;
+            // slowly revert to initial pos and scale
+            transform.localScale = Vector3.Lerp(transform.localScale, initScale, Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, initPos, Time.deltaTime);
+
         }
     }
 
@@ -188,8 +207,10 @@ public class BallMovement : MonoBehaviour
 
     }
 
-    private void PlaceHandOnObject(ref GameObject hand, ref Transform originalParent, ref bool handOnWheel)
+    private void PlaceHandOnObject(ref GameObject hand, ref Transform originalParent, ref bool handOnObject)
     {
+
+        Debug.Log("Hand placed on object");
          
         var shortestDistance = Vector3.Distance(snapPositions[0].position, hand.transform.position);
         var bestSnap = snapPositions[0];
@@ -208,15 +229,14 @@ public class BallMovement : MonoBehaviour
         }
         originalParent = hand.transform.parent;
 
-        hand.transform.parent = bestSnap.transform;
+        //hand.transform.parent = bestSnap.transform.parent;
         hand.transform.position = bestSnap.transform.position;
         //hand.transform.scale
 
-        handOnWheel = true;
+        handOnObject = true;
 
         // update initial values for later calculation 
         initLeftHandPos = leftHand.transform.localPosition;
         initRightHandPos = rightHand.transform.localPosition;
-        initScale = this.transform.localScale;
     }
 }
