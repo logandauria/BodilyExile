@@ -84,7 +84,7 @@ public class BallMovement : MonoBehaviour
 
         //ConvertRotation();
 
-        ConvertScale();
+        ControlBall();
 
         //TurnVehicle();
 
@@ -93,8 +93,9 @@ public class BallMovement : MonoBehaviour
     }
 
 
-    // Changes the scale of the object based on the distance value between the two hands
-    private void ConvertScale()
+    // Changes the scale of the object based on the x distance value between the two hands
+    // Changes the rotation speed of the object based on the z distance value between the two hands
+    private void ControlBall()
     {
         // Check that both hands are grabbing a snap position on the object
         if (rightHandOnObject == true && leftHandOnObject == true)
@@ -114,7 +115,7 @@ public class BallMovement : MonoBehaviour
         }
     }
 
-    private void ConvertRotation()
+    /*private void ConvertRotation()
     {
         float initx = transform.eulerAngles.x;
         float inity = transform.eulerAngles.y;
@@ -140,7 +141,7 @@ public class BallMovement : MonoBehaviour
         }
     }
 
-    /*private void TurnVehicle()
+    private void TurnVehicle()
     {
         var turn = -transform.rotation.eulerAngles.z;
         if(turn < -350)
@@ -150,22 +151,26 @@ public class BallMovement : MonoBehaviour
         VehicleRigidBody.MoveRotation(Quaternion.RotateTowards(Vehicle.transform.rotation, Quaternion.Euler(0, turn, 0), Time.deltaTime * ));
     }*/
 
+
+    // Catches when hand(s) are released from the object
     private void ReleaseHandsFromObject()
     {
         if (rightHandOnObject && rightController.TryGetFeatureValue(CommonUsages.gripButton, out rightGripped) && !rightGripped)
         {
+            // fix right hand
             rightHand.transform.parent = rightHandOriginalParent;
             rightHand.transform.position = rightHandOriginalParent.position;
             rightHand.transform.rotation = rightHandOriginalParent.rotation;
             rightHand.transform.localScale = rightHandOriginalParent.localScale;
             rightHandOnObject = false;
-            // slowly revert to initial pos and scale
+            // slowly revert the object to initial pos and scale
             transform.localScale = Vector3.Lerp(transform.localScale, initScale, Time.deltaTime);
             transform.position = Vector3.Lerp(transform.position, initPos, Time.deltaTime);
 
         }
         if (leftHandOnObject && leftController.TryGetFeatureValue(CommonUsages.gripButton, out leftGripped) && !leftGripped)
         {
+            // fix left hand
             leftHand.transform.parent = leftHandOriginalParent;
             leftHand.transform.position = leftHandOriginalParent.position;
             leftHand.transform.rotation = leftHandOriginalParent.rotation;
