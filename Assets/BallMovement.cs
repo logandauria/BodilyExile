@@ -97,6 +97,7 @@ public class BallMovement : MonoBehaviour
     // Changes the rotation speed of the object based on the z distance value between the two hands
     private void ControlBall()
     {
+
         // Check that both hands are grabbing a snap position on the object
         if (rightHandOnObject == true && leftHandOnObject == true)
         {
@@ -107,12 +108,22 @@ public class BallMovement : MonoBehaviour
             float zDiff = Mathf.Abs(initRightHandPos.z - initLeftHandPos.z) - Mathf.Abs(rightHand.transform.position.z - leftHand.transform.position.z);
 
             // apply x difference of hands to the scale
-            this.transform.localScale = initScale - new Vector3(xDiff,xDiff,xDiff);
+            this.transform.localScale = initScale - new Vector3(xDiff / 2, xDiff / 2, xDiff / 2);
 
             // apply z difference of hands to the rotation
-            Vector3 newRot = new Vector3(0, 4 - zDiff*8, 0);
+            Vector3 newRot = new Vector3(0, 1 - zDiff * 4, 0);
             this.transform.eulerAngles += newRot;
         }
+        else if (rightHandOnObject == false && leftHandOnObject == true)
+        {
+            this.transform.position = Vector3.Lerp(this.transform.position, leftHand.transform.position, Time.deltaTime);
+        }
+        else if (rightHandOnObject == true && leftHandOnObject == false)
+        {
+            this.transform.position = Vector3.Lerp(this.transform.position, rightHand.transform.position, Time.deltaTime);
+
+        }
+
     }
 
     /*private void ConvertRotation()
@@ -193,10 +204,12 @@ public class BallMovement : MonoBehaviour
 
     private void OnTriggerStay()
     {
+        // How far away the hand is allowed to be to trigger a grab.
+        float minGrabDist = 0.5f;
 
         if (rightHandOnObject == false && rightController.TryGetFeatureValue(CommonUsages.gripButton, out rightGripped) && rightGripped)
         {
-            if ((rightHand.transform.position - this.transform.position).magnitude < 1f)
+            if ((rightHand.transform.position - this.transform.position).magnitude < minGrabDist) // check that right hand is close enough to grab
             {
 
                 PlaceHandOnObject(ref rightHand, ref rightHandOriginalParent, ref rightHandOnObject);
@@ -204,7 +217,7 @@ public class BallMovement : MonoBehaviour
         }
         if (leftHandOnObject == false && leftController.TryGetFeatureValue(CommonUsages.gripButton, out leftGripped) && leftGripped)
         {
-            if ((leftHand.transform.position - this.transform.position).magnitude < 1f)
+            if ((leftHand.transform.position - this.transform.position).magnitude < minGrabDist) // check that right hand is close enough to grab
             {
                 PlaceHandOnObject(ref leftHand, ref leftHandOriginalParent, ref leftHandOnObject);
             }
