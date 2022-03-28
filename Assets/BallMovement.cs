@@ -211,7 +211,7 @@ public class BallMovement : MonoBehaviour
         {
             if ((rightHand.transform.position - this.transform.position).magnitude < minGrabDist) // check that right hand is close enough to grab
             {
-
+                initRightHandPos = rightHand.transform.localPosition;
                 PlaceHandOnObject(ref rightHand, ref rightHandOriginalParent, ref rightHandOnObject);
             }
         }
@@ -219,6 +219,7 @@ public class BallMovement : MonoBehaviour
         {
             if ((leftHand.transform.position - this.transform.position).magnitude < minGrabDist) // check that right hand is close enough to grab
             {
+                initLeftHandPos = leftHand.transform.localPosition;
                 PlaceHandOnObject(ref leftHand, ref leftHandOriginalParent, ref leftHandOnObject);
             }
         }
@@ -254,7 +255,5 @@ public class BallMovement : MonoBehaviour
         handOnObject = true;
 
         // update initial values for later calculation 
-        initLeftHandPos = leftHand.transform.localPosition;
-        initRightHandPos = rightHand.transform.localPosition;
     }
 }
