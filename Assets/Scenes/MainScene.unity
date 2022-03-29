@@ -641,6 +641,7 @@ MonoBehaviour:
   restSmoothTime: 0.5
   beatVector: {x: 2, y: 80, z: 20}
   restVector: {x: 0.1, y: 0.1, z: 0.1}
+  colorBlendPercent: 0
   triggerTime: 0.4
   randomRange: 1
 --- !u!73398921 &150855612
@@ -1440,6 +1441,7 @@ MonoBehaviour:
   restSmoothTime: 1
   beatVector: {x: 1.5, y: 0.3, z: 100}
   restVector: {x: 0.1, y: 0.1, z: 0.1}
+  colorBlendPercent: 0
   triggerTime: 0.25
   randomRange: 1
 --- !u!1001 &580378867
@@ -2732,12 +2734,18 @@ VisualEffect:
       - m_Value: 0.1
         m_Name: frequency
         m_Overridden: 1
+      - m_Value: 0
+        m_Name: blend1
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
       m_Array: []
     m_Vector4f:
-      m_Array: []
+      m_Array:
+      - m_Value: {x: 1, y: 0, z: 0, w: 0}
+        m_Name: color1
+        m_Overridden: 1
     m_Uint:
       m_Array: []
     m_Int:
@@ -2785,6 +2793,7 @@ MonoBehaviour:
   restSmoothTime: 0.5
   beatVector: {x: 1, y: 80, z: 10}
   restVector: {x: 0.1, y: 0.1, z: 0.1}
+  colorBlendPercent: 2
   triggerTime: 1
   randomRange: 1
 --- !u!1 &1762845842 stripped
