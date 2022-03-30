@@ -45,10 +45,10 @@ Frequency seems to be a preset movement pattern based on the provided value/seed
   
 ![alt text](https://github.com/TeamSally/SallyProject/blob/master/images/vfxsphereconform.png)  
   
-**Attraction Speed** - How fast the particles conform to the sphere
-**Attraction Force** - How strong the conforming force is
-**Stick Distance** - How far away the particles will tend to stick
-**Stick Force** - How strong the sticking force
+**Attraction Speed** - How fast the particles conform to the sphere  
+**Attraction Force** - How strong the conforming force is  
+**Stick Distance** - How far away the particles will tend to stick  
+**Stick Force** - How strong the sticking force  
   
 For the orb, there are 2 VFX graphs used so you can change all of the above values for both. They don't have to be the same and will probably look cooler with different values
 
