@@ -39,14 +39,21 @@ public class BallMovement : MonoBehaviour
 
     private Vector3 initPos;
     private Vector3 initRot;
-    
+    private Rigidbody rb;
+    private Vector3 newRot = new Vector3(0, 0, 0);
+    private Vector3 previousPos;
+    public Vector3 velocity = new Vector3(0, 0, 0);
+
 
     // Start is called before the first frame update
     void Start()
     {
+        // initialize needed variables
         initPos = this.transform.position;
         initRot = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z);
         initScale = this.transform.localScale;
+        rb = GetComponent<Rigidbody>();
+        previousPos = this.transform.position;
     }
 
 
@@ -72,7 +79,6 @@ public class BallMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         if (!leftController.isValid /*|| !rightController.isValid*/)
         {
             GetDevice();
@@ -88,7 +94,23 @@ public class BallMovement : MonoBehaviour
 
         //TurnVehicle();
 
+        this.transform.eulerAngles += newRot;
 
+
+        if (rightHandOnObject == false && leftHandOnObject == false)
+        {
+            this.transform.position += velocity;
+            newRot = Vector3.Lerp(newRot, new Vector3(0, 0, 0), Time.deltaTime / 5);
+            velocity = Vector3.Lerp(velocity, new Vector3(0, 0, 0), Time.deltaTime*3);
+            // slowly revert to initial pos and scale
+            transform.localScale = Vector3.Lerp(transform.localScale, initScale, Time.deltaTime*3);
+            transform.position = Vector3.Lerp(transform.position, initPos, Time.deltaTime*3);
+        }
+        else
+        {
+            velocity = (transform.position - previousPos) / (Time.deltaTime*10);
+            previousPos = this.transform.position;
+        }
         //transform.eulerAngles = new Vector3(initRot.x, initRot.y, transform.eulerAngles.z);
     }
 
@@ -111,17 +133,16 @@ public class BallMovement : MonoBehaviour
             this.transform.localScale = initScale - new Vector3(xDiff / 2, xDiff / 2, xDiff / 2);
 
             // apply z difference of hands to the rotation
-            Vector3 newRot = new Vector3(0, 1 - zDiff * 4, 0);
-            this.transform.eulerAngles += newRot;
+            newRot = new Vector3(0, 1 - zDiff * 3, 0);
         }
         else if (rightHandOnObject == false && leftHandOnObject == true)
         {
+            
             this.transform.position = Vector3.Lerp(this.transform.position, leftHand.transform.position, Time.deltaTime*10);
         }
         else if (rightHandOnObject == true && leftHandOnObject == false)
         {
             this.transform.position = Vector3.Lerp(this.transform.position, rightHand.transform.position, Time.deltaTime*10);
-
         }
 
     }
@@ -174,10 +195,6 @@ public class BallMovement : MonoBehaviour
             rightHand.transform.rotation = rightHandOriginalParent.rotation;
             rightHand.transform.localScale = rightHandOriginalParent.localScale;
             rightHandOnObject = false;
-            // slowly revert the object to initial pos and scale
-            transform.localScale = Vector3.Lerp(transform.localScale, initScale, Time.deltaTime);
-            transform.position = Vector3.Lerp(transform.position, initPos, Time.deltaTime);
-
         }
         if (leftHandOnObject && leftController.TryGetFeatureValue(CommonUsages.gripButton, out leftGripped) && !leftGripped)
         {
@@ -187,18 +204,10 @@ public class BallMovement : MonoBehaviour
             leftHand.transform.rotation = leftHandOriginalParent.rotation;
             leftHand.transform.localScale = leftHandOriginalParent.localScale;
             leftHandOnObject = false;
-            // slowly revert to initial pos and scale
-            transform.localScale = Vector3.Lerp(transform.localScale, initScale, Time.deltaTime);
-            transform.position = Vector3.Lerp(transform.position, initPos, Time.deltaTime);
-
         }
         if (!leftHandOnObject && !leftHandOnObject)
         {
             transform.parent = null;
-            // slowly revert to initial pos and scale
-            transform.localScale = Vector3.Lerp(transform.localScale, initScale, Time.deltaTime);
-            transform.position = Vector3.Lerp(transform.position, initPos, Time.deltaTime);
-
         }
     }
 
