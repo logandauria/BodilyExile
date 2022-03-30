@@ -49,6 +49,11 @@ Frequency seems to be a preset movement pattern based on the provided value/seed
 **Attraction Force** - How strong the conforming force is  
 **Stick Distance** - How far away the particles will tend to stick  
 **Stick Force** - How strong the sticking force  
+
+
+![alt text](https://github.com/TeamSally/SallyProject/blob/master/images/vfxvelocitycurves.png)
+
+These velocity curves apply different forces based on time passed. You can add infinite points on the graph
   
 For the orb, there are 2 VFX graphs used so you can change all of the above values for both. They don't have to be the same and will probably look cooler with different values
 
