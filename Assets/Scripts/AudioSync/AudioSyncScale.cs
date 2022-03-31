@@ -4,22 +4,50 @@ using UnityEngine;
 
 public class AudioSyncScale : AudioSyncer {
 
+	public bool WorkWithChangingScale = false;
+	private Vector3 initScale;
+	private float scaleTimer;
+
+
+	void Start()
+    {
+		scaleTimer = timeToBeat;
+    }
+
 	private IEnumerator MoveToScale(Vector3 _target)
 	{
 		Vector3 _curr = transform.localScale;
 		Vector3 _initial = _curr;
 		float _timer = 0;
 
-		while (_curr != _target)
+
+		if (WorkWithChangingScale)
 		{
-			_curr = Vector3.Lerp(_initial, _target, _timer / timeToBeat);
-			_timer += Time.deltaTime;
+			while (_timer != timeToBeat)
+			{
+				_timer += Time.deltaTime;
+				_curr = transform.localScale += beatScale / (timeToBeat / Time.deltaTime);
 
-			transform.localScale = _curr;
+				transform.localScale = _curr;
 
-			yield return null;
+				yield return null;
+			}
 		}
+		else
+		{
 
+			while (_curr != _target)
+			{
+				_curr = Vector3.Lerp(_initial, _target, _timer / timeToBeat);
+				_timer += Time.deltaTime;
+
+				transform.localScale = _curr;
+
+				yield return null;
+			}
+
+		}
+		scaleTimer = 0;
 		m_isBeat = false;
 	}
 
@@ -28,7 +56,16 @@ public class AudioSyncScale : AudioSyncer {
 		base.OnUpdate();
 
 		if (m_isBeat) return;
+		if (WorkWithChangingScale)
+		{
+			scaleTimer += Time.deltaTime;
+			if(scaleTimer < timeToBeat) { 
+				Vector3 _curr = transform.localScale -= beatScale / (timeToBeat / Time.deltaTime);
 
+				transform.localScale = _curr;
+
+			}
+		}
 		transform.localScale = Vector3.Lerp(transform.localScale, restScale, restSmoothTime * Time.deltaTime);
 	}
 
