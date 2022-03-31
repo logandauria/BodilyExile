@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class AudioSyncScale : AudioSyncer {
 
+
+	// Allows the scale change to function on an object that has a changing scale, since rest vector and beat vector are prefined scales,
+	// the script instead increases the object based on the beatScale alone, using it as a percentage increase.
+	// WARNING: Setting to true causes scale to increase by the percentage representation of beatScale
 	public bool WorkWithChangingScale = false;
 	private Vector3 initScale;
 	private float scaleTimer;
@@ -20,9 +24,10 @@ public class AudioSyncScale : AudioSyncer {
 		Vector3 _initial = _curr;
 		float _timer = 0;
 
-
+		// increase the scale based on how much time has passed
 		if (WorkWithChangingScale)
 		{
+			// timer instead based off of time to beat
 			while (_timer != timeToBeat)
 			{
 				_timer += Time.deltaTime;
@@ -56,17 +61,23 @@ public class AudioSyncScale : AudioSyncer {
 		base.OnUpdate();
 
 		if (m_isBeat) return;
+		// decrease the scale based on how much time has passed
 		if (WorkWithChangingScale)
 		{
 			scaleTimer += Time.deltaTime;
-			if(scaleTimer < timeToBeat) { 
+			// timer based off of time to beat
+			if (scaleTimer < timeToBeat)
+			{
 				Vector3 _curr = transform.localScale -= beatScale / (timeToBeat / Time.deltaTime);
 
 				transform.localScale = _curr;
 
 			}
 		}
-		transform.localScale = Vector3.Lerp(transform.localScale, restScale, restSmoothTime * Time.deltaTime);
+		else
+		{
+			transform.localScale = Vector3.Lerp(transform.localScale, restScale, restSmoothTime * Time.deltaTime);
+		}
 	}
 
 	public override void OnBeat()
