@@ -6,7 +6,6 @@ using System.Collections;
 [RequireComponent(typeof(AudioSource))]
 class MarkovTest: MonoBehaviour {
 
-
     // We need audioSources.length == clips.length because
     // in order to have multiple samples playing at the same time,
     // each needs its own `AudioSource`.
@@ -48,15 +47,18 @@ class MarkovTest: MonoBehaviour {
         // load the file into memory (src: https://bit.ly/35EWiI4),
         // so timers should be triggered to start *after* all
         // sounds have been initialized.
-        StartCoroutine(PlayTrack0Loop());
+        StartCoroutine(PlayTrack0Loop(0));
     }
 
 
-    private IEnumerator PlayTrack0Loop() {
+    private IEnumerator PlayTrack0Loop(int phase) {
+
+        // TODO: Generalize to all tracks
         while(true) {
-            Debug.Log("Playing track0");
-            audioSources[0].Play();
-            // TODO: add hook here into prob matrix for ith phase of project
+            if (Markov.shouldPlay(phase, Track.Track0, 0)) {
+                Debug.Log("ASDF Playing!");
+                audioSources[0].Play();
+            }
             yield return new WaitForSeconds(audioSources[0].clip.length);
         }
     }
@@ -71,13 +73,21 @@ class MarkovTest: MonoBehaviour {
 
 }
 
+enum Track: int {
+    Track0 = 0,
+    Track1 = 1,
+    Track2 = 2,
+    Track3 = 3
+}
+
 
 class Markov {
 
-    private double[,] phase0prob;
-    private double[,] phase1prob;
+    static readonly double[,] phase0prob;
+    static readonly double[,] phase1prob;
+    static readonly double[,,] phases;
 
-    public Markov() {
+    static Markov() {
 
         // We need to create probability matrices
         // for *each* phase of the project.
@@ -109,9 +119,24 @@ class Markov {
                                     { 0.5, 0.4, 0.1 },
                                     { 0.8, 0.2, 0.0 }};
 
+
+        // phases = new double[,,] {phase0prob, phase1prob, {{}}};
         // TODO: Add more as implemented.
+    }
 
+    public static bool shouldPlay(int phase, Track track, int sample) {
 
+        // FIXME: sample vs. track audiosources (needs med refactor)
+        // FIXME: Global indices for track values vs. per-phase index
+        // TODO: make dynamic phases (see constructor)
+
+        double curProb = phase0prob[(int) track, sample];
+        var randVal = Random.value;
+
+        Debug.Log("ASDF curProb: " + curProb);
+        Debug.Log("ASDF randVal: " + randVal);
+
+        return randVal <= curProb;
     }
 
 }
