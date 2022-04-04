@@ -2,7 +2,6 @@
 
 using UnityEngine;
 using System.Collections;
-using System.Timers;
 
 [RequireComponent(typeof(AudioSource))]
 class MarkovTest: MonoBehaviour {
@@ -21,9 +20,6 @@ class MarkovTest: MonoBehaviour {
     private const int NUM_FILES = 6;
     private bool running = false;
 
-    private Timer track0Timer;
-    private Timer track1Timer;
-
     void Start() {
 
         // Instantiate all the AudioSources
@@ -39,7 +35,11 @@ class MarkovTest: MonoBehaviour {
             audioSources[i].clip = audioClips[i];
         }
 
-        // TODO: Make into array of timers
+        // FIXME: Starting coroutines in Start() vs. Update()?
+        // Enable playing of audio now that we've initialized everything
+        running = true;
+
+        // TODO: Make into array of coroutines or something
 
         // Play track0 on a simulated loop,
         // re-triggering after each interval.
@@ -48,37 +48,31 @@ class MarkovTest: MonoBehaviour {
         // load the file into memory (src: https://bit.ly/35EWiI4),
         // so timers should be triggered to start *after* all
         // sounds have been initialized.
-        track0Timer = new Timer(audioClips[0].length * 1000);
-        track0Timer.Elapsed += (sender, args) => {
-            Debug.Log("Playing!");
-            audioSources[0].Play();
-        };
+        StartCoroutine(PlayTrack0Loop());
+    }
 
-        // Start timer
-        track0Timer.Enabled = true;
+
+    private IEnumerator PlayTrack0Loop() {
+        while(true) {
+            Debug.Log("Playing track0");
+            audioSources[0].Play();
+            // TODO: add hook here into prob matrix for ith phase of project
+            yield return new WaitForSeconds(audioSources[0].clip.length);
+        }
     }
 
     void Update() {
-
         if (!running) {
             return;
         }
 
-
-        // audioSources[0].clip = clips[0];
-        // audioSources[0].Play();
-        // play1 = true;
-
-        // Debug.Log("Clip length is " + audioSources[0].clip.length);
-        // Debug.Log("Clip length is " + audioSources[1].clip.length);
-
+        // TODO: May move track coroutines in here
     }
 
 }
 
 
 class Markov {
-
 
     private double[,] phase0prob;
     private double[,] phase1prob;
@@ -121,20 +115,3 @@ class Markov {
     }
 
 }
-
-// class Sample {
-
-//     public String filename {get; set;}
-
-//     public Sample(String filename) {
-//         this.filename = filename;
-//     }
-
-
-//     public void play() {
-
-//     }
-
-
-// }
-
