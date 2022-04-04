@@ -2,6 +2,7 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Timers;
 
 [RequireComponent(typeof(AudioSource))]
 class MarkovTest: MonoBehaviour {
@@ -20,6 +21,9 @@ class MarkovTest: MonoBehaviour {
     private const int NUM_FILES = 6;
     private bool running = false;
 
+    private Timer track0Timer;
+    private Timer track1Timer;
+
     void Start() {
 
         // Instantiate all the AudioSources
@@ -33,8 +37,25 @@ class MarkovTest: MonoBehaviour {
         // Trigger all clips to play at once (for now)
         for (int i = 0; i < NUM_FILES; i++) {
             audioSources[i].clip = audioClips[i];
-            audioSources[i].Play();
         }
+
+        // TODO: Make into array of timers
+
+        // Play track0 on a simulated loop,
+        // re-triggering after each interval.
+        //
+        // Note that the system needs around a ~1s buffer to
+        // load the file into memory (src: https://bit.ly/35EWiI4),
+        // so timers should be triggered to start *after* all
+        // sounds have been initialized.
+        track0Timer = new Timer(audioClips[0].length * 1000);
+        track0Timer.Elapsed += (sender, args) => {
+            Debug.Log("Playing!");
+            audioSources[0].Play();
+        };
+
+        // Start timer
+        track0Timer.Enabled = true;
     }
 
     void Update() {
