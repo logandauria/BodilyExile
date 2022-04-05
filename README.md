@@ -35,10 +35,11 @@ https://i.gyazo.com/11aba9749615c5e4b03e06edf9e3484e.mp4
 **Time to Beat** - the amount of time it takes for an effect to trigger  
 **Rest Smooth Time** - the amount of time it takes to revert back to the original state defined by the restVector  
 For the beat and rest vector, the xyz values correlate to the following: (X: intensity, Y: drag, Z: frequency)  
-Intensity is the strength of the force  
-Drag is the directional force (i think lol)  
-Frequency seems to be a preset movement pattern based on the provided value/seed  
-**Beat Vector** - The values that will be set once a beat occurs  
+**X/Intensity** is the strength of all forces applied  
+**Y/Drag** is the strength of random directional forces applied  
+**Z/Frequency** is a preset movement pattern based on the provided value/seed  
+**Beat Vector Upper Bound** - The upper bound for range values that will be set once a beat occurs  
+**Beat Vector Upper Bound** - The lower bound for range values that will be set once a beat occurs  
 **Rest Vector** - The default values that the graph goes back to when there are no beats occuring  
 **Random Range** - Will activate functionality for the XYZ values to be randomly selected between a range of the beat vector and rest vector  
   
