@@ -45,7 +45,7 @@ For the beat and rest vectors, the xyz values correlate to the following: (X: in
 **Rest Vector** - The default values that the graph goes back to when there are no beats occuring  
 **Random Range** - Will activate functionality for the XYZ values to be randomly selected between a range of the beat vector and rest vector  
   
-  
+#### VFX Property Conform to Sphere
 ![alt text](https://github.com/TeamSally/SallyProject/blob/master/images/vfxsphereconform.png)  
   
 **Attraction Speed** - How fast the particles conform to the sphere  
@@ -53,7 +53,7 @@ For the beat and rest vectors, the xyz values correlate to the following: (X: in
 **Stick Distance** - How far away the particles will tend to stick  
 **Stick Force** - How strong the sticking force  
 
-
+#### VFX Property Velocity
 ![alt text](https://github.com/TeamSally/SallyProject/blob/master/images/vfxvelocitycurves.png)
 
 These velocity curves apply different forces based on time passed. You can add infinite points on the graph
