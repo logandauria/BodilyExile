@@ -28,21 +28,25 @@ https://i.gyazo.com/11aba9749615c5e4b03e06edf9e3484e.mp4
 
 ### Editing the VFX forces
 
+#### Music sync script 'VFX Test 2'
 ![alt text](https://github.com/TeamSally/SallyProject/blob/master/images/vfxtest2.png)
 
 **Bias** - the value threshold for when a beat will occur to music. Higher values are for stronger notes. Range is 0-100  
 **Time Step** - the amount of time required between two beats  
 **Time to Beat** - the amount of time it takes for an effect to trigger  
 **Rest Smooth Time** - the amount of time it takes to revert back to the original state defined by the restVector  
-For the beat and rest vector, the xyz values correlate to the following: (X: intensity, Y: drag, Z: frequency)  
-Intensity is the strength of the force  
-Drag is the directional force (i think lol)  
-Frequency seems to be a preset movement pattern based on the provided value/seed  
-**Beat Vector** - The values that will be set once a beat occurs  
+
+For the beat and rest vectors, the xyz values correlate to the following: (X: intensity, Y: drag, Z: frequency)  
+**X/Intensity** is the strength of all forces applied  
+**Y/Drag** is the strength of random directional forces applied  
+**Z/Frequency** is a preset movement pattern based on the provided value/seed  
+  
+**Beat Vector Upper Bound** - The upper bound for range values that will be set once a beat occurs  
+**Beat Vector Upper Bound** - The lower bound for range values that will be set once a beat occurs  
 **Rest Vector** - The default values that the graph goes back to when there are no beats occuring  
 **Random Range** - Will activate functionality for the XYZ values to be randomly selected between a range of the beat vector and rest vector  
   
-  
+#### VFX Property Conform to Sphere
 ![alt text](https://github.com/TeamSally/SallyProject/blob/master/images/vfxsphereconform.png)  
   
 **Attraction Speed** - How fast the particles conform to the sphere  
@@ -50,7 +54,7 @@ Frequency seems to be a preset movement pattern based on the provided value/seed
 **Stick Distance** - How far away the particles will tend to stick  
 **Stick Force** - How strong the sticking force  
 
-
+#### VFX Property Velocity
 ![alt text](https://github.com/TeamSally/SallyProject/blob/master/images/vfxvelocitycurves.png)
 
 These velocity curves apply different forces based on time passed. You can add infinite points on the graph
