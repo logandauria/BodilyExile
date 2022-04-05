@@ -44,7 +44,6 @@ public class BallMovement : MonoBehaviour
     private Vector3 previousPos;
     public Vector3 velocity = new Vector3(0, 0, 0);
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -101,7 +100,7 @@ public class BallMovement : MonoBehaviour
         {
             this.transform.position += velocity;
             newRot = Vector3.Lerp(newRot, new Vector3(0, 0, 0), Time.deltaTime / 5);
-            velocity = Vector3.Lerp(velocity, new Vector3(0, 0, 0), Time.deltaTime*3);
+            velocity = Vector3.Lerp(velocity, new Vector3(0, 0, 0), Time.deltaTime);
             // slowly revert to initial pos and scale
             transform.localScale = Vector3.Lerp(transform.localScale, initScale, Time.deltaTime*3);
             transform.position = Vector3.Lerp(transform.position, initPos, Time.deltaTime*3);
@@ -133,16 +132,20 @@ public class BallMovement : MonoBehaviour
             this.transform.localScale = initScale - new Vector3(xDiff / 2, xDiff / 2, xDiff / 2);
 
             // apply z difference of hands to the rotation
-            newRot = new Vector3(0, 1 - zDiff * 3, 0);
+            newRot = new Vector3(0, 1 - zDiff * 1, 0); // 3 before
+
         }
         else if (rightHandOnObject == false && leftHandOnObject == true)
         {
-            
             this.transform.position = Vector3.Lerp(this.transform.position, leftHand.transform.position, Time.deltaTime*10);
+
+            initPos = transform.position;
         }
         else if (rightHandOnObject == true && leftHandOnObject == false)
         {
             this.transform.position = Vector3.Lerp(this.transform.position, rightHand.transform.position, Time.deltaTime*10);
+
+            initPos = transform.position;
         }
 
     }

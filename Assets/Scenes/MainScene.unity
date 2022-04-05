@@ -617,7 +617,7 @@ GameObject:
   - component: {fileID: 150855612}
   - component: {fileID: 150855611}
   m_Layer: 0
-  m_Name: SphereSync (1)
+  m_Name: SphereSync2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -635,15 +635,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b35cdd5af1fe7d24dad5dabe196010f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bias: 35
-  timeStep: 0.5
+  bias: 10
+  timeStep: 0.3
   timeToBeat: 0.01
   restSmoothTime: 0.5
-  beatVectorUpperBound: {x: 5, y: 10, z: 100}
-  beatVectorLowerBound: {x: 3, y: 3, z: 3}
+  beatVectorUpperBound: {x: 2, y: 1000, z: 3}
+  beatVectorLowerBound: {x: 0.5, y: 1, z: 0.1}
   restVector: {x: 0.1, y: 0.1, z: 0.1}
   colorBlendPercent: 0
-  triggerTime: 0.4
+  triggerTime: 1
   randomRange: 1
 --- !u!73398921 &150855612
 VFXRenderer:
@@ -702,13 +702,13 @@ VisualEffect:
   m_PropertySheet:
     m_Float:
       m_Array:
-      - m_Value: 0.1
+      - m_Value: 1
         m_Name: intensity
         m_Overridden: 1
-      - m_Value: 0.1
+      - m_Value: 1
         m_Name: drag
         m_Overridden: 1
-      - m_Value: 0.1
+      - m_Value: 2
         m_Name: frequency
         m_Overridden: 1
     m_Vector2f:
@@ -2929,9 +2929,9 @@ MonoBehaviour:
   timeStep: 0.5
   timeToBeat: 0.01
   restSmoothTime: 0.5
-  beatVectorUpperBound: {x: 3, y: 80, z: 10}
-  beatVectorLowerBound: {x: 1, y: 40, z: 5}
-  restVector: {x: 0.3, y: 0.3, z: 0.3}
+  beatVectorUpperBound: {x: 1, y: 500, z: 10}
+  beatVectorLowerBound: {x: 0.1, y: 100, z: 0.1}
+  restVector: {x: 0.05, y: 0.3, z: 0.1}
   colorBlendPercent: 1
   triggerTime: 1
   randomRange: 1
