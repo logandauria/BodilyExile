@@ -9,12 +9,19 @@ public class VFXTest2 : AudioSyncer
 
 	VisualEffect vfx = new VisualEffect();
 
-	public Vector3 beatVector;
+	// Max value for random range
+	public Vector3 beatVectorUpperBound;
+	// Min value for random range
+	public Vector3 beatVectorLowerBound;
+	// Default values to return to
 	public Vector3 restVector;
 
+	// Upper bound for random percentage of color blend on beats
 	public float colorBlendPercent = 0f;
+	// How long the effect lasts every beat
 	public float triggerTime  = .2f;
-	public bool randomRange;
+	// Whether or not to include the random range. If set to false, script will use the upper bound vector
+	public bool randomRange = true;
 
 	private float timer = 0;
 	private float randomPercent = 0;
@@ -52,16 +59,16 @@ public class VFXTest2 : AudioSyncer
 
 		if (randomRange)
 		{
-			vfx.SetFloat("intensity", Random.Range(restVector.x, beatVector.x));
-			vfx.SetFloat("drag", Random.Range(restVector.y, beatVector.y));
-			vfx.SetFloat("frequency", Random.Range(restVector.z, beatVector.z));
+			vfx.SetFloat("intensity", Random.Range(beatVectorLowerBound.x, beatVectorUpperBound.x));
+			vfx.SetFloat("drag", Random.Range(beatVectorLowerBound.y, beatVectorUpperBound.y));
+			vfx.SetFloat("frequency", Random.Range(beatVectorLowerBound.z, beatVectorUpperBound.z));
 			randomPercent = Random.Range(0, colorBlendPercent);
 		}
 		else
 		{
-			vfx.SetFloat("intensity", beatVector.x);
-			vfx.SetFloat("drag", beatVector.y);
-			vfx.SetFloat("frequency", beatVector.z);
+			vfx.SetFloat("intensity", beatVectorUpperBound.x);
+			vfx.SetFloat("drag", beatVectorUpperBound.y);
+			vfx.SetFloat("frequency", beatVectorUpperBound.z);
 		}
 	}
 
