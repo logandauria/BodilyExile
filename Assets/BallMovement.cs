@@ -263,6 +263,8 @@ public class BallMovement : MonoBehaviour
         //hand.transform.parent = bestSnap.transform.parent;
         hand.transform.position = bestSnap.transform.position;
         //hand.transform.scale
+        
+
 
         handOnObject = true;
 
