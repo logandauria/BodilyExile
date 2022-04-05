@@ -102,8 +102,8 @@ public class BallMovement : MonoBehaviour
             newRot = Vector3.Lerp(newRot, new Vector3(0, 0, 0), Time.deltaTime / 5);
             velocity = Vector3.Lerp(velocity, new Vector3(0, 0, 0), Time.deltaTime);
             // slowly revert to initial pos and scale
-            transform.localScale = Vector3.Lerp(transform.localScale, initScale, Time.deltaTime*3);
-            transform.position = Vector3.Lerp(transform.position, initPos, Time.deltaTime*3);
+            transform.localScale = Vector3.Lerp(transform.localScale, initScale, Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, initPos, Time.deltaTime);
         }
         else
         {
