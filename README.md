@@ -28,6 +28,7 @@ https://i.gyazo.com/11aba9749615c5e4b03e06edf9e3484e.mp4
 
 ### Editing the VFX forces
 
+#### Music sync script 'VFX Test 2'
 ![alt text](https://github.com/TeamSally/SallyProject/blob/master/images/vfxtest2.png)
 
 **Bias** - the value threshold for when a beat will occur to music. Higher values are for stronger notes. Range is 0-100  
