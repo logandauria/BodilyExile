@@ -42,7 +42,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d4c867f6b72b714dbb5fd1780afe208, type: 3}
-  m_Name: Flower1
+  m_Name: FlowerField
   m_EditorClassIdentifier: 
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 0}
@@ -213,7 +213,7 @@ VisualEffectResource:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Flower1
+  m_Name: FlowerField
   m_Graph: {fileID: 114350483966674976}
   m_Infos:
     m_RendererSettings:
@@ -2746,7 +2746,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Gradient, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"colorKeys":[{"color":{"r":15.028544425964356,"g":11.583958625793457,"b":0.0,"a":1.0},"time":0.0},{"color":{"r":7.5778656005859379,"g":6.619909286499023,"b":5.182973861694336,"a":1.0},"time":0.27940794825553896},{"color":{"r":1.646983027458191,"g":0.4738960266113281,"b":1.5288304090499879,"a":1.0},"time":0.5470664501190186},{"color":{"r":0.0,"g":0.5016078948974609,"b":1.0,"a":1.0},"time":0.8147097229957581}],"alphaKeys":[{"alpha":1.0,"time":0.0},{"alpha":1.0,"time":1.0}],"gradientMode":0}'
+      m_SerializableObject: '{"colorKeys":[{"color":{"r":1.5200563669204713,"g":20.064289093017579,"b":0.0,"a":1.0},"time":0.0},{"color":{"r":0.20473960041999818,"g":2.290651559829712,"b":0.0,"a":1.0},"time":0.27940794825553896},{"color":{"r":1.646983027458191,"g":0.4738960266113281,"b":1.5288304090499879,"a":1.0},"time":0.7029373645782471},{"color":{"r":0.0,"g":0.5016078948974609,"b":1.0,"a":1.0},"time":0.8147097229957581}],"alphaKeys":[{"alpha":1.0,"time":0.0},{"alpha":1.0,"time":1.0}],"gradientMode":0}'
     m_Space: 2147483647
   m_Property:
     name: Color
@@ -5341,7 +5341,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Texture3D, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"obj":{"fileID":11700000,"guid":"356d34b8cb45bc94cae98897ee0b98d0","type":2}}'
+      m_SerializableObject: '{"obj":{"fileID":11700000,"guid":"e3e1e5602ee887c458e93d8748c26709","type":2}}'
     m_Space: 2147483647
   m_Property:
     name: DistanceField
@@ -5817,7 +5817,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 5
+      m_SerializableObject: 100
     m_Space: 2147483647
   m_Property:
     name: attractionSpeed
@@ -5851,7 +5851,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 20
+      m_SerializableObject: 1
     m_Space: 2147483647
   m_Property:
     name: attractionForce
@@ -5885,7 +5885,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 0.1
+      m_SerializableObject: 1
     m_Space: 2147483647
   m_Property:
     name: stickDistance
@@ -5982,7 +5982,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Texture3D, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"obj":{"fileID":11700000,"guid":"356d34b8cb45bc94cae98897ee0b98d0","type":2}}'
+      m_SerializableObject: '{"obj":{"fileID":11700000,"guid":"e3e1e5602ee887c458e93d8748c26709","type":2}}'
     m_Space: 2147483647
   m_Property:
     name: SDF
