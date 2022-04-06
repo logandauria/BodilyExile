@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 262.36157, g: 325.07837, b: 430.26367, a: 1}
+  m_IndirectSpecularColor: {r: 262.37012, g: 325.0642, b: 430.19287, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -297,6 +297,7 @@ GameObject:
   m_Component:
   - component: {fileID: 117346390}
   - component: {fileID: 117346389}
+  - component: {fileID: 117346391}
   m_Layer: 0
   m_Name: XR Origin
   m_TagString: Untagged
@@ -337,6 +338,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &117346391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 117346388}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0167527bdfb5594d80e802f94fad827, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bias: 20
+  timeStep: 0.1
+  timeToBeat: 0.01
+  restSmoothTime: 0.1
+  pulseStrength: 0
+  useLeft: 1
+  useRight: 1
 --- !u!1 &135046893 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5686134208185362930, guid: d2121c8d819597349ac6f3e6043fa1f3, type: 3}
@@ -1215,7 +1235,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f019d560e424d646978297cd8bb15d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftNode: 4
   rightHand: {fileID: 135046893}
   leftHand: {fileID: 1762845842}
   snapPositions:

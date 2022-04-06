@@ -6,7 +6,6 @@ using UnityEngine.XR;
 public class BallMovement : MonoBehaviour
 {
     // Unity's new XR Interaction Toolkit input handling. See instantiation in Start()
-    [SerializeField]
     private XRNode leftNode = XRNode.LeftHand;
     private XRNode rightNode = XRNode.RightHand;
     private InputDevice leftController;
@@ -44,6 +43,8 @@ public class BallMovement : MonoBehaviour
     private Vector3 previousPos;
     public Vector3 velocity = new Vector3(0, 0, 0);
 
+    private bool needToLetGo = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -73,6 +74,15 @@ public class BallMovement : MonoBehaviour
             rightController = devices[0];
             Debug.Log("RIGHT CONNECTED");
         }
+    }
+
+    private void OnLetGo()
+    {
+        // update initpos to position ball was thrown from
+        initPos = transform.position;
+        rightHand.SetActive(true);
+        leftHand.SetActive(true);
+        needToLetGo = false;
     }
 
     // Update is called once per frame
@@ -134,18 +144,30 @@ public class BallMovement : MonoBehaviour
             // apply z difference of hands to the rotation
             newRot = new Vector3(0, 1 - zDiff * 1, 0); // 3 before
 
+            leftController.SendHapticImpulse(1, 0.1f);
+            rightController.SendHapticImpulse(1, 0.1f);
+
+
         }
         else if (rightHandOnObject == false && leftHandOnObject == true)
         {
             this.transform.position = Vector3.Lerp(this.transform.position, leftHand.transform.position, Time.deltaTime*10);
+            leftController.SendHapticImpulse(1, 0.1f);
 
-            initPos = transform.position;
+            needToLetGo = true;
+
         }
         else if (rightHandOnObject == true && leftHandOnObject == false)
         {
             this.transform.position = Vector3.Lerp(this.transform.position, rightHand.transform.position, Time.deltaTime*10);
+            leftController.SendHapticImpulse(1, 0.1f);
 
-            initPos = transform.position;
+            needToLetGo = true;
+
+        }
+        else
+        {
+            if(needToLetGo) OnLetGo();
         }
 
     }
@@ -263,7 +285,9 @@ public class BallMovement : MonoBehaviour
         //hand.transform.parent = bestSnap.transform.parent;
         hand.transform.position = bestSnap.transform.position;
         //hand.transform.scale
-        
+
+        // make hand disappear
+        hand.SetActive(false);
 
 
         handOnObject = true;
