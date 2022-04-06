@@ -152,17 +152,18 @@ public class BallMovement : MonoBehaviour
         else if (rightHandOnObject == false && leftHandOnObject == true)
         {
             this.transform.position = Vector3.Lerp(this.transform.position, leftHand.transform.position, Time.deltaTime*10);
-            leftController.SendHapticImpulse(1, 0.1f);
 
             needToLetGo = true;
+            leftController.SendHapticImpulse(1, 0.1f);
+
 
         }
         else if (rightHandOnObject == true && leftHandOnObject == false)
         {
             this.transform.position = Vector3.Lerp(this.transform.position, rightHand.transform.position, Time.deltaTime*10);
-            leftController.SendHapticImpulse(1, 0.1f);
 
             needToLetGo = true;
+            leftController.SendHapticImpulse(1, 0.1f);
 
         }
         else
