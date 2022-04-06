@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 262.32446, g: 325.1289, b: 430.44434, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -926,7 +926,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 339926820}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.915, y: 13.308, z: 14.555}
+  m_LocalPosition: {x: 1.822, y: 13.308, z: 14.356}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1064,7 +1064,7 @@ VisualEffect:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 527012610}
   m_Enabled: 1
-  m_Asset: {fileID: 8926484042661614526, guid: de6cd0f2ed817594fb3d6f08d3a22f84, type: 3}
+  m_Asset: {fileID: 8926484042661614526, guid: ee0fba33f2bca3444b8efef97fb5f7b6, type: 3}
   m_InitialEventName: OnPlay
   m_InitialEventNameOverriden: 0
   m_StartSeed: 0
@@ -1116,8 +1116,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 527012610}
   m_LocalRotation: {x: -0.7092632, y: -0, z: -0, w: 0.7049438}
-  m_LocalPosition: {x: 0, y: -0.9, z: 0}
-  m_LocalScale: {x: 1, y: 0.5, z: 1}
+  m_LocalPosition: {x: 0, y: -0.014, z: -0.005}
+  m_LocalScale: {x: 1, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 339926822}
@@ -1135,15 +1135,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b35cdd5af1fe7d24dad5dabe196010f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bias: 20
-  timeStep: 0.5
-  timeToBeat: 0.1
-  restSmoothTime: 1
-  beatVectorUpperBound: {x: 0, y: 0, z: 0}
-  beatVectorLowerBound: {x: 0, y: 0, z: 0}
-  restVector: {x: 0.5, y: 0.5, z: 0.5}
-  colorBlendPercent: 1
-  triggerTime: 0.25
+  bias: 10
+  timeStep: 0.3
+  timeToBeat: 0.01
+  restSmoothTime: 0.5
+  beatVectorUpperBound: {x: 0.5, y: 500, z: 5}
+  beatVectorLowerBound: {x: 0.1, y: 1, z: 0.1}
+  restVector: {x: 0.1, y: 0.1, z: 0.1}
+  colorBlendPercent: 0
+  triggerTime: 1
   randomRange: 1
 --- !u!1 &820730148
 GameObject:
@@ -1767,7 +1767,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1379679407
 MonoBehaviour:
   m_ObjectHideFlags: 0

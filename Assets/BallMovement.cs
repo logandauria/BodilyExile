@@ -240,7 +240,7 @@ public class BallMovement : MonoBehaviour
     private void OnTriggerStay()
     {
         // How far away the hand is allowed to be to trigger a grab.
-        float minGrabDist = 0.5f;
+        float minGrabDist = 0.8f;
 
         if (rightHandOnObject == false && rightController.TryGetFeatureValue(CommonUsages.gripButton, out rightGripped) && rightGripped)
         {
