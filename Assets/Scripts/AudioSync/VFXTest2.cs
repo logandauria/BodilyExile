@@ -22,6 +22,8 @@ public class VFXTest2 : AudioSyncer
 	public float triggerTime  = .2f;
 	// Whether or not to include the random range. If set to false, script will use the upper bound vector
 	public bool randomRange = true;
+	// Whether or not the effects will get set to picked values, or values will be added to current value.
+	public bool additive = false;
 
 	private float timer = 0;
 	private float randomPercent = 0;
@@ -45,10 +47,18 @@ public class VFXTest2 : AudioSyncer
 
 			return;
 		}
-
-		vfx.SetFloat("intensity", restVector.x);
-		vfx.SetFloat("drag", restVector.y);
-		vfx.SetFloat("frequency", restVector.z);
+		if (additive)
+		{
+			//vfx.SetFloat("intensity", vfx.GetFloat("intensity") - Random.Range(beatVectorLowerBound.x, beatVectorUpperBound.x));
+			//vfx.SetFloat("drag", vfx.GetFloat("drag") - Random.Range(beatVectorLowerBound.y, beatVectorUpperBound.y));
+			//vfx.SetFloat("frequency", vfx.GetFloat("frequency") - Random.Range(beatVectorLowerBound.z, beatVectorUpperBound.z));
+		}
+		else
+		{
+			vfx.SetFloat("intensity", restVector.x);
+			vfx.SetFloat("drag", restVector.y);
+			vfx.SetFloat("frequency", restVector.z);
+		}
 		vfx.SetFloat("blend1", Mathf.Lerp(vfx.GetFloat("blend1"), 0, Time.deltaTime));
 
 	}
@@ -59,9 +69,18 @@ public class VFXTest2 : AudioSyncer
 
 		if (randomRange)
 		{
-			vfx.SetFloat("intensity", Random.Range(beatVectorLowerBound.x, beatVectorUpperBound.x));
-			vfx.SetFloat("drag", Random.Range(beatVectorLowerBound.y, beatVectorUpperBound.y));
-			vfx.SetFloat("frequency", Random.Range(beatVectorLowerBound.z, beatVectorUpperBound.z));
+			if (additive)
+			{
+				vfx.SetFloat("intensity", vfx.GetFloat("intensity") + Random.Range(beatVectorLowerBound.x, beatVectorUpperBound.x));
+				vfx.SetFloat("drag", vfx.GetFloat("drag") + Random.Range(beatVectorLowerBound.y, beatVectorUpperBound.y));
+				vfx.SetFloat("frequency", vfx.GetFloat("frequency") + Random.Range(beatVectorLowerBound.z, beatVectorUpperBound.z));
+			}
+			else
+			{
+				vfx.SetFloat("intensity", Random.Range(beatVectorLowerBound.x, beatVectorUpperBound.x));
+				vfx.SetFloat("drag", Random.Range(beatVectorLowerBound.y, beatVectorUpperBound.y));
+				vfx.SetFloat("frequency", Random.Range(beatVectorLowerBound.z, beatVectorUpperBound.z));
+			}
 			randomPercent = Random.Range(0, colorBlendPercent);
 		}
 		else

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 262.36157, g: 325.07837, b: 430.26367, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -527,6 +527,7 @@ MonoBehaviour:
   colorBlendPercent: 0
   triggerTime: 1
   randomRange: 1
+  additive: 0
 --- !u!73398921 &150855612
 VFXRenderer:
   serializedVersion: 1
@@ -1009,6 +1010,7 @@ GameObject:
   - component: {fileID: 527012612}
   - component: {fileID: 527012611}
   - component: {fileID: 527012614}
+  - component: {fileID: 527012615}
   m_Layer: 0
   m_Name: Point Cloud Person
   m_TagString: Untagged
@@ -1145,6 +1147,30 @@ MonoBehaviour:
   colorBlendPercent: 0
   triggerTime: 1
   randomRange: 1
+  additive: 0
+--- !u!114 &527012615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 527012610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b35cdd5af1fe7d24dad5dabe196010f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bias: 15
+  timeStep: 0.15
+  timeToBeat: 0.01
+  restSmoothTime: 0.5
+  beatVectorUpperBound: {x: 0.1, y: 100, z: 5}
+  beatVectorLowerBound: {x: 0, y: 0, z: 0}
+  restVector: {x: 0, y: 0, z: 0}
+  colorBlendPercent: 0
+  triggerTime: 0.2
+  randomRange: 1
+  additive: 1
 --- !u!1 &820730148
 GameObject:
   m_ObjectHideFlags: 0
@@ -1891,7 +1917,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 5c7964afe64ce48448e912d60e64bc7a, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 8e57d1251229695419a5f88c84631c79, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -2234,9 +2260,10 @@ MonoBehaviour:
   beatVectorUpperBound: {x: 1, y: 500, z: 10}
   beatVectorLowerBound: {x: 0.1, y: 100, z: 0.1}
   restVector: {x: 0.05, y: 0.3, z: 0.1}
-  colorBlendPercent: 1
+  colorBlendPercent: 2
   triggerTime: 1
   randomRange: 1
+  additive: 0
 --- !u!1 &1762845842 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 958409316331131813, guid: 43d7c73d8eb90d44bbddf1bd61006e35, type: 3}
