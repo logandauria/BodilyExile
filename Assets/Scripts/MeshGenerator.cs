@@ -12,6 +12,7 @@ public class MeshGenerator : MonoBehaviour
 
     public int xSize = 20;
     public int zSize = 20;
+    public bool riseOnEdge = false;
 
     // Awake is called before Start()
     void Awake()
@@ -33,7 +34,7 @@ public class MeshGenerator : MonoBehaviour
         {
             for (int x = 0; x <= xSize; x++)
             {
-                float y = Mathf.PerlinNoise(x * .3f, z * .3f);
+                float y = Mathf.PerlinNoise(x*.3f , z*.3f);
                 vertices[i] = new Vector3(x, y, z);
                 i++;
             }
