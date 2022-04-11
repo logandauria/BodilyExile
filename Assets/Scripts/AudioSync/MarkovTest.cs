@@ -22,6 +22,7 @@ class MarkovTest: MonoBehaviour {
     public const int NUM_LEAD     = 6;
     public const int NUM_WHISPERS = 9;
 
+    public AudioClip[,] exileClips;
     public AudioClip[] exileGuitarClips    = new AudioClip[NUM_GUITAR];
     public AudioClip[] exileHarmonyClips   = new AudioClip[NUM_HARMONY];
     public AudioClip[] exileLeadClips      = new AudioClip[NUM_LEAD];
@@ -33,31 +34,15 @@ class MarkovTest: MonoBehaviour {
 
     void Start() {
 
+        GameObject child = new GameObject("Player");
+        child.transform.parent = gameObject.transform;
+
         for (int i = 0; i < 28; i++) {
-            GameObject child = new GameObject("Player");
-            child.transform.parent = gameObject.transform;
             audioSources[i] = child.AddComponent<AudioSource>();
         }
 
         // Load in all audio data
         loadAudioClips();
-
-        Debug.Log("thing: " + exileGuitarClips[0]);
-
-        // Trigger all clips to play at once (for now)
-
-        int offset = 0;
-        for (int i = 0; i < NUM_GUITAR; i++)   {
-            audioSources[i].clip = exileGuitarClips[i];
-        }
-        offset += NUM_GUITAR - 1;
-        for (int i = 0; i < NUM_HARMONY; i++)  { audioSources[offset + i].clip = exileHarmonyClips[i];  }
-        offset += NUM_HARMONY - 1;
-        for (int i = 0; i < NUM_LEAD; i++)     { audioSources[offset + i].clip = exileLeadClips[i];     }
-        offset += NUM_LEAD - 1;
-        for (int i = 0; i < NUM_WHISPERS; i++) { audioSources[offset + i].clip = exileWhispersClips[i]; }
-
-
 
         // FIXME: Starting coroutines in Start() vs. Update()?
         // Enable playing of audio now that we've initialized everything
@@ -97,10 +82,30 @@ class MarkovTest: MonoBehaviour {
     }
 
     private void loadAudioClips() {
-        for (int i = 0; i < NUM_GUITAR; i++)   { exileGuitarClips[i]   = Resources.Load<AudioClip>("Stems/Guitar-" + (i + 1));   }
-        for (int i = 0; i < NUM_HARMONY; i++)  { exileHarmonyClips[i]  = Resources.Load<AudioClip>("Stems/Harmony-" + (i + 1));    }
-        for (int i = 0; i < NUM_LEAD; i++)     { exileLeadClips[i]     = Resources.Load<AudioClip>("Stems/LeadVocal-" + (i + 1));  }
-        for (int i = 0; i < NUM_WHISPERS; i++) { exileWhispersClips[i] = Resources.Load<AudioClip>("Stems/Whispers-" + (i + 1));   }
+        int offset = 0;
+
+        for (int i = 0; i < NUM_GUITAR; i++)   {
+            exileGuitarClips[i] = Resources.Load<AudioClip>("AudioStems/Guitar-" + (i + 1));
+            audioSources[i].clip = exileGuitarClips[i];
+        }
+
+        offset += NUM_GUITAR;
+        for (int i = 0; i < NUM_HARMONY; i++)  {
+            exileHarmonyClips[i] = Resources.Load<AudioClip>("AudioStems/Harmony-" + (i + 1));
+            audioSources[offset + i].clip = exileHarmonyClips[i];
+        }
+
+        offset += NUM_HARMONY;
+        for (int i = 0; i < NUM_LEAD; i++)     {
+            exileLeadClips[i] = Resources.Load<AudioClip>("AudioStems/LeadVocal-" + (i + 1));
+            audioSources[offset + i].clip = exileLeadClips[i];
+        }
+
+        offset += NUM_LEAD;
+        for (int i = 0; i < NUM_WHISPERS; i++) {
+            exileWhispersClips[i] = Resources.Load<AudioClip>("AudioStems/Whispers-" + (i + 1));
+            audioSources[offset + i].clip = exileWhispersClips[i];
+        }
 
     }
 }
