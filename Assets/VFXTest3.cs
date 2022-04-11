@@ -29,7 +29,7 @@ public class VFXTest3 : AudioSyncer
 	private float timer = 0;
 	private float randomPercent = 0;
 
-	private int select = 0;
+	private int select = 1;
 
 
 	public override void OnUpdate()
