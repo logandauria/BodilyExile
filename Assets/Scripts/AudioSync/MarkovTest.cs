@@ -13,26 +13,51 @@ class MarkovTest: MonoBehaviour {
     // for now we'll just set n of them.
     //
     // (for me: note that audioClips is public so we can set the files in Unity for testing)
-    private AudioSource[] audioSources = new AudioSource[NUM_FILES];
-    public AudioClip[] audioClips      = new AudioClip[NUM_FILES];
+    private AudioSource[] audioSources = new AudioSource[28];
 
-    private const int NUM_FILES = 6;
+    // AudioClips from Bodily Exile (track1)
+
+    public const int NUM_GUITAR   = 7;
+    public const int NUM_HARMONY  = 6;
+    public const int NUM_LEAD     = 6;
+    public const int NUM_WHISPERS = 9;
+
+    public AudioClip[] exileGuitarClips    = new AudioClip[NUM_GUITAR];
+    public AudioClip[] exileHarmonyClips   = new AudioClip[NUM_HARMONY];
+    public AudioClip[] exileLeadClips      = new AudioClip[NUM_LEAD];
+    public AudioClip[] exileWhispersClips  = new AudioClip[NUM_WHISPERS];
+
+    // TODO: Samples from the other track
+
     private bool running = false;
 
     void Start() {
 
-        // Instantiate all the AudioSources
-        for (int i = 0; i < NUM_FILES; i++) {
+        for (int i = 0; i < 28; i++) {
             GameObject child = new GameObject("Player");
             child.transform.parent = gameObject.transform;
             audioSources[i] = child.AddComponent<AudioSource>();
         }
 
+        // Load in all audio data
+        loadAudioClips();
+
+        Debug.Log("thing: " + exileGuitarClips[0]);
 
         // Trigger all clips to play at once (for now)
-        for (int i = 0; i < NUM_FILES; i++) {
-            audioSources[i].clip = audioClips[i];
+
+        int offset = 0;
+        for (int i = 0; i < NUM_GUITAR; i++)   {
+            audioSources[i].clip = exileGuitarClips[i];
         }
+        offset += NUM_GUITAR - 1;
+        for (int i = 0; i < NUM_HARMONY; i++)  { audioSources[offset + i].clip = exileHarmonyClips[i];  }
+        offset += NUM_HARMONY - 1;
+        for (int i = 0; i < NUM_LEAD; i++)     { audioSources[offset + i].clip = exileLeadClips[i];     }
+        offset += NUM_LEAD - 1;
+        for (int i = 0; i < NUM_WHISPERS; i++) { audioSources[offset + i].clip = exileWhispersClips[i]; }
+
+
 
         // FIXME: Starting coroutines in Start() vs. Update()?
         // Enable playing of audio now that we've initialized everything
@@ -71,6 +96,13 @@ class MarkovTest: MonoBehaviour {
         // TODO: May move track coroutines in here
     }
 
+    private void loadAudioClips() {
+        for (int i = 0; i < NUM_GUITAR; i++)   { exileGuitarClips[i]   = Resources.Load<AudioClip>("Stems/Guitar-" + (i + 1));   }
+        for (int i = 0; i < NUM_HARMONY; i++)  { exileHarmonyClips[i]  = Resources.Load<AudioClip>("Stems/Harmony-" + (i + 1));    }
+        for (int i = 0; i < NUM_LEAD; i++)     { exileLeadClips[i]     = Resources.Load<AudioClip>("Stems/LeadVocal-" + (i + 1));  }
+        for (int i = 0; i < NUM_WHISPERS; i++) { exileWhispersClips[i] = Resources.Load<AudioClip>("Stems/Whispers-" + (i + 1));   }
+
+    }
 }
 
 enum Track: int {
@@ -101,7 +133,7 @@ class Markov {
         //  }
         //
         //
-        phase0prob = new double[,] {{ 0.5, 0.6, 0.4 },
+        phase0prob = new double[,] {{ 1.0, 0.6, 0.4 },
                                     { 0.2, 0.9, 0.1 }};
 
 
