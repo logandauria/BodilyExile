@@ -43,6 +43,9 @@ public class BallMovement : MonoBehaviour
     private Vector3 previousPos;
     public Vector3 velocity = new Vector3(0, 0, 0);
 
+    private float comebackSpeed = 2;
+    private float throwSpeed = 1;
+
     private bool needToLetGo = false;
 
     // Start is called before the first frame update
@@ -113,11 +116,11 @@ public class BallMovement : MonoBehaviour
             velocity = Vector3.Lerp(velocity, new Vector3(0, 0, 0), Time.deltaTime);
             // slowly revert to initial pos and scale
             transform.localScale = Vector3.Lerp(transform.localScale, initScale, Time.deltaTime);
-            transform.position = Vector3.Lerp(transform.position, initPos, Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, initPos, Time.deltaTime/comebackSpeed);
         }
         else
         {
-            velocity = (transform.position - previousPos) / (Time.deltaTime*10);
+            velocity = (transform.position - previousPos) / (Time.deltaTime * throwSpeed);
             previousPos = this.transform.position;
         }
         //transform.eulerAngles = new Vector3(initRot.x, initRot.y, transform.eulerAngles.z);
