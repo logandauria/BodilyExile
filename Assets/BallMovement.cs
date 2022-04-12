@@ -133,6 +133,7 @@ public class BallMovement : MonoBehaviour
         if (rightHandOnObject == true && leftHandOnObject == true)
         {
             this.transform.position = (rightHand.transform.position + leftHand.transform.position) / 2;
+            
 
             // current hand distances - initial hand distances for x and z
             float xDiff = Mathf.Abs(initRightHandPos.x - initLeftHandPos.x) - Mathf.Abs(rightHand.transform.position.x - leftHand.transform.position.x);
@@ -151,6 +152,7 @@ public class BallMovement : MonoBehaviour
         }
         else if (rightHandOnObject == false && leftHandOnObject == true)
         {
+            this.transform.eulerAngles = leftHand.transform.eulerAngles;
             this.transform.position = Vector3.Lerp(this.transform.position, leftHand.transform.position, Time.deltaTime*10);
 
             needToLetGo = true;
@@ -161,6 +163,7 @@ public class BallMovement : MonoBehaviour
         else if (rightHandOnObject == true && leftHandOnObject == false)
         {
             this.transform.position = Vector3.Lerp(this.transform.position, rightHand.transform.position, Time.deltaTime*10);
+            this.transform.eulerAngles = rightHand.transform.eulerAngles;
 
             needToLetGo = true;
             leftController.SendHapticImpulse(1, 0.1f);

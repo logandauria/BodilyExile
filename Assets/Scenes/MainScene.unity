@@ -2127,6 +2127,7 @@ GameObject:
   - component: {fileID: 1755748811}
   - component: {fileID: 1755748810}
   - component: {fileID: 1755748813}
+  - component: {fileID: 1755748814}
   m_Layer: 0
   m_Name: SphereSync
   m_TagString: Untagged
@@ -2200,8 +2201,17 @@ VisualEffect:
       - m_Value: 0.1
         m_Name: frequency
         m_Overridden: 1
-      - m_Value: 0
+      - m_Value: 2
         m_Name: blend1
+        m_Overridden: 1
+      - m_Value: 2
+        m_Name: blend2
+        m_Overridden: 1
+      - m_Value: 2
+        m_Name: blend3
+        m_Overridden: 1
+      - m_Value: 1
+        m_Name: stickdistance
         m_Overridden: 1
     m_Vector2f:
       m_Array: []
@@ -2211,6 +2221,12 @@ VisualEffect:
       m_Array:
       - m_Value: {x: 1, y: 0, z: 0, w: 0}
         m_Name: color1
+        m_Overridden: 1
+      - m_Value: {x: 0, y: 0.7382784, z: 1, w: 0}
+        m_Name: color2
+        m_Overridden: 1
+      - m_Value: {x: 1, y: 0.5860485, z: 0, w: 0}
+        m_Name: color3
         m_Overridden: 1
     m_Uint:
       m_Array: []
@@ -2250,7 +2266,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1755748809}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b35cdd5af1fe7d24dad5dabe196010f5, type: 3}
+  m_Script: {fileID: 11500000, guid: c2f93b70663cfde4cad4b05f328c03a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   bias: 20
@@ -2260,10 +2276,32 @@ MonoBehaviour:
   beatVectorUpperBound: {x: 1, y: 500, z: 10}
   beatVectorLowerBound: {x: 0.1, y: 100, z: 0.1}
   restVector: {x: 0.05, y: 0.3, z: 0.1}
-  colorBlendPercent: 2
   triggerTime: 1
   randomRange: 1
   additive: 0
+  colorBlendPercent:
+  - 1.5
+  - 1.5
+  - 1.5
+--- !u!114 &1755748814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1755748809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 465a66ce3bcb5bf408f46c0c18961a5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bias: 35
+  timeStep: 2.5
+  timeToBeat: 0.1
+  restSmoothTime: 1
+  restStickDist: 1
+  beatStickDist: 0.1
+  triggerTime: 0.1
 --- !u!1 &1762845842 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 958409316331131813, guid: 43d7c73d8eb90d44bbddf1bd61006e35, type: 3}
