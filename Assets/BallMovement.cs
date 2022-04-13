@@ -44,7 +44,11 @@ public class BallMovement : MonoBehaviour
     public Vector3 velocity = new Vector3(0, 0, 0);
 
     private float comebackSpeed = 1;
+<<<<<<< HEAD
     private float throwSpeed = 2;
+=======
+    private float throwSpeed = 5;
+>>>>>>> a61babc351a0676aeefce3a5f6630b52f4a54762
 
     private bool needToLetGo = false;
 
