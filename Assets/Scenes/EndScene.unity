@@ -430,7 +430,7 @@ Camera:
   field of view: 60
   orthographic: 0
   orthographic size: 5
-  m_Depth: 0
+  m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 32
@@ -1039,6 +1039,7 @@ GameObject:
   - component: {fileID: 744496001}
   - component: {fileID: 744496003}
   - component: {fileID: 744496002}
+  - component: {fileID: 744496004}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -1175,6 +1176,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 744496000}
   m_CullTransparentMesh: 1
+--- !u!114 &744496004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 744496000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7665a6189e37b2f4c9fbf7c9d0ab4af1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &926932530
 GameObject:
   m_ObjectHideFlags: 0
@@ -1704,6 +1717,7 @@ GameObject:
   - component: {fileID: 1493634655}
   - component: {fileID: 1493634654}
   - component: {fileID: 1493634653}
+  - component: {fileID: 1493634657}
   m_Layer: 5
   m_Name: Credits Canvas
   m_TagString: Untagged
@@ -1760,8 +1774,8 @@ Canvas:
   m_GameObject: {fileID: 1493634652}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 158825284}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -1794,6 +1808,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1493634657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1493634652}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7665a6189e37b2f4c9fbf7c9d0ab4af1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1887612227
 PrefabInstance:
   m_ObjectHideFlags: 0
