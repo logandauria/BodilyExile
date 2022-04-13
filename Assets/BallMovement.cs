@@ -43,8 +43,8 @@ public class BallMovement : MonoBehaviour
     private Vector3 previousPos;
     public Vector3 velocity = new Vector3(0, 0, 0);
 
-    private float comebackSpeed = 2;
-    private float throwSpeed = 1;
+    private float comebackSpeed = 1;
+    private float throwSpeed = 2;
 
     private bool needToLetGo = false;
 
@@ -146,7 +146,7 @@ public class BallMovement : MonoBehaviour
             this.transform.localScale = initScale - new Vector3(xDiff / 2, xDiff / 2, xDiff / 2);
 
             // apply z difference of hands to the rotation
-            newRot = new Vector3(0, 1 - zDiff * 1, 0); // 3 before
+            newRot = new Vector3(0, .5f - zDiff * 0.5f, 0); // 3 before
 
             leftController.SendHapticImpulse(1, 0.1f);
             rightController.SendHapticImpulse(1, 0.1f);
