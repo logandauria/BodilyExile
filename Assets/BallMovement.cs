@@ -40,11 +40,23 @@ public class BallMovement : MonoBehaviour
     private Vector3 initRot;
     private Rigidbody rb;
     private Vector3 newRot = new Vector3(0, 0, 0);
-    private Vector3 previousPos;
-    public Vector3 velocity = new Vector3(0, 0, 0);
+    private Vector3 lhandPreviousPos;
+    private Vector3 rhandPreviousPos;
+    private Vector3 combinedVelocity = new Vector3(0, 0, 0);
+    private Vector3 rhandVelocity = new Vector3(0, 0, 0);
+    private Vector3 lhandVelocity = new Vector3(0, 0, 0);
+    public Vector3 rotVelocity = new Vector3(0, 0, 0);
+    public Vector3 previousRotVelocity = new Vector3(0, 0, 0);
 
-    private float comebackSpeed = 1f;
-    private float throwSpeed = 3.5f;
+    public float velocityTimer = 0;
+    private bool timeVel = false;
+
+    public float timer = 0;
+
+    // VARIABLES TO INFLUENCE ORB VELOCITIES
+    private float comebackSpeed = 0.5f;
+    private float throwSpeedDamper = 5f;
+    private float rotDamper = 20f;
 
     private bool needToLetGo = false;
 
@@ -56,7 +68,8 @@ public class BallMovement : MonoBehaviour
         initRot = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z);
         initScale = this.transform.localScale;
         rb = GetComponent<Rigidbody>();
-        previousPos = this.transform.position;
+        lhandPreviousPos = leftHand.transform.position;
+        rhandPreviousPos = rightHand.transform.position;
     }
 
 
@@ -91,10 +104,14 @@ public class BallMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        timer += Time.deltaTime;
+
         if (!leftController.isValid /*|| !rightController.isValid*/)
         {
             GetDevice();
         }
+
+        //rotVelocity = this.transform.localEulerAngles - previousRotVelocity;
 
         OnTriggerStay();
 
@@ -106,23 +123,32 @@ public class BallMovement : MonoBehaviour
 
         //TurnVehicle();
 
-        this.transform.eulerAngles += newRot;
-
+        //this.transform.eulerAngles += newRot;
+        
+        if(timeVel) velocityTimer += Time.deltaTime;
 
         if (rightHandOnObject == false && leftHandOnObject == false)
         {
-            this.transform.position += velocity;
+            this.transform.position += combinedVelocity;
             newRot = Vector3.Lerp(newRot, new Vector3(0, 0, 0), Time.deltaTime / 5);
-            velocity = Vector3.Lerp(velocity, new Vector3(0, 0, 0), Time.deltaTime);
-            // slowly revert to initial pos and scale
+            combinedVelocity = Vector3.Lerp(combinedVelocity, new Vector3(0, 0, 0), Time.deltaTime);
+            rotVelocity = Vector3.Lerp(rotVelocity, new Vector3(0, 0, 0), Time.deltaTime);
+
+            // prevent stutter from rotational force
+            if(rotVelocity.magnitude > 0.001) this.transform.eulerAngles += rotVelocity;
+
+            // slowly revert to initial pos and scale and rot
             transform.localScale = Vector3.Lerp(transform.localScale, initScale, Time.deltaTime);
             transform.position = Vector3.Lerp(transform.position, initPos, Time.deltaTime/comebackSpeed);
+            timeVel = false;
         }
         else
         {
-            velocity = (transform.position - previousPos) / (Time.deltaTime * throwSpeed);
-            previousPos = this.transform.position;
+            //combinedVelocity = (transform.position - previousPos) / (Time.deltaTime * throwSpeed);
         }
+        lhandPreviousPos = leftHand.transform.position;
+        rhandPreviousPos = rightHand.transform.position;
+        if(timer % 0.02f < 0.01f) previousRotVelocity = this.transform.localEulerAngles;
         //transform.eulerAngles = new Vector3(initRot.x, initRot.y, transform.eulerAngles.z);
     }
 
@@ -160,8 +186,6 @@ public class BallMovement : MonoBehaviour
 
             needToLetGo = true;
             leftController.SendHapticImpulse(1, 0.1f);
-
-
         }
         else if (rightHandOnObject == true && leftHandOnObject == false)
         {
@@ -176,7 +200,6 @@ public class BallMovement : MonoBehaviour
         {
             if(needToLetGo) OnLetGo();
         }
-
     }
 
     /*private void ConvertRotation()
@@ -215,7 +238,6 @@ public class BallMovement : MonoBehaviour
         VehicleRigidBody.MoveRotation(Quaternion.RotateTowards(Vehicle.transform.rotation, Quaternion.Euler(0, turn, 0), Time.deltaTime * ));
     }*/
 
-
     // Catches when hand(s) are released from the object
     private void ReleaseHandsFromObject()
     {
@@ -227,6 +249,18 @@ public class BallMovement : MonoBehaviour
             rightHand.transform.rotation = rightHandOriginalParent.rotation;
             rightHand.transform.localScale = rightHandOriginalParent.localScale;
             rightHandOnObject = false;
+            if (leftGripped) {
+                velocityTimer = 0;
+                timeVel = true;
+            } else if (velocityTimer < .2f)
+            {
+                combinedVelocity = (rhandPreviousPos - rightHand.transform.position) / (Time.deltaTime * throwSpeedDamper) + (lhandPreviousPos - leftHand.transform.position) / (Time.deltaTime * throwSpeedDamper) / 2;
+            }
+            else
+            {
+                combinedVelocity = (rhandPreviousPos - rightHand.transform.position) / (Time.deltaTime * throwSpeedDamper);
+            }
+            rotVelocity = (previousRotVelocity - this.transform.eulerAngles) / rotDamper;
         }
         if (leftHandOnObject && leftController.TryGetFeatureValue(CommonUsages.triggerButton, out leftGripped) && !leftGripped)
         {
@@ -236,6 +270,21 @@ public class BallMovement : MonoBehaviour
             leftHand.transform.rotation = leftHandOriginalParent.rotation;
             leftHand.transform.localScale = leftHandOriginalParent.localScale;
             leftHandOnObject = false;
+
+            if (rightGripped)
+            {
+                velocityTimer = 0;
+                timeVel = true;
+            }
+            else if (velocityTimer < .2f)
+            {
+                combinedVelocity = (rhandPreviousPos - rightHand.transform.position) / (Time.deltaTime * throwSpeedDamper) + (lhandPreviousPos - leftHand.transform.position) / (Time.deltaTime * throwSpeedDamper) / 2;
+            }
+            else
+            {
+                combinedVelocity = (lhandPreviousPos - leftHand.transform.position) / (Time.deltaTime * throwSpeedDamper);
+            }
+            rotVelocity = (this.transform.eulerAngles - previousRotVelocity) / rotDamper;
         }
         if (!leftHandOnObject && !leftHandOnObject)
         {
