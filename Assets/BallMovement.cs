@@ -219,7 +219,7 @@ public class BallMovement : MonoBehaviour
     // Catches when hand(s) are released from the object
     private void ReleaseHandsFromObject()
     {
-        if (rightHandOnObject && rightController.TryGetFeatureValue(CommonUsages.gripButton, out rightGripped) && !rightGripped)
+        if (rightHandOnObject && rightController.TryGetFeatureValue(CommonUsages.triggerButton, out rightGripped) && !rightGripped)
         {
             // fix right hand
             rightHand.transform.parent = rightHandOriginalParent;
@@ -228,7 +228,7 @@ public class BallMovement : MonoBehaviour
             rightHand.transform.localScale = rightHandOriginalParent.localScale;
             rightHandOnObject = false;
         }
-        if (leftHandOnObject && leftController.TryGetFeatureValue(CommonUsages.gripButton, out leftGripped) && !leftGripped)
+        if (leftHandOnObject && leftController.TryGetFeatureValue(CommonUsages.triggerButton, out leftGripped) && !leftGripped)
         {
             // fix left hand
             leftHand.transform.parent = leftHandOriginalParent;
@@ -248,7 +248,7 @@ public class BallMovement : MonoBehaviour
         // How far away the hand is allowed to be to trigger a grab.
         float minGrabDist = 0.8f;
 
-        if (rightHandOnObject == false && rightController.TryGetFeatureValue(CommonUsages.gripButton, out rightGripped) && rightGripped)
+        if (rightHandOnObject == false && rightController.TryGetFeatureValue(CommonUsages.triggerButton, out rightGripped) && rightGripped)
         {
             if ((rightHand.transform.position - this.transform.position).magnitude < minGrabDist) // check that right hand is close enough to grab
             {
@@ -256,7 +256,7 @@ public class BallMovement : MonoBehaviour
                 PlaceHandOnObject(ref rightHand, ref rightHandOriginalParent, ref rightHandOnObject);
             }
         }
-        if (leftHandOnObject == false && leftController.TryGetFeatureValue(CommonUsages.gripButton, out leftGripped) && leftGripped)
+        if (leftHandOnObject == false && leftController.TryGetFeatureValue(CommonUsages.triggerButton, out leftGripped) && leftGripped)
         {
             if ((leftHand.transform.position - this.transform.position).magnitude < minGrabDist) // check that right hand is close enough to grab
             {
