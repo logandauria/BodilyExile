@@ -132,7 +132,7 @@ public class BallMovement : MonoBehaviour
             this.transform.position += combinedVelocity;
             newRot = Vector3.Lerp(newRot, new Vector3(0, 0, 0), Time.deltaTime / 5);
             combinedVelocity = Vector3.Lerp(combinedVelocity, new Vector3(0, 0, 0), Time.deltaTime);
-            rotVelocity = Vector3.Lerp(rotVelocity, new Vector3(0, 0, 0), Time.deltaTime);
+            rotVelocity = Vector3.Lerp(rotVelocity, new Vector3(0, 0, 0), Time.deltaTime / 2);
 
             // prevent stutter from rotational force
             if(rotVelocity.magnitude > 0.001) this.transform.eulerAngles += rotVelocity;

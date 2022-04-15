@@ -17,6 +17,9 @@ public class CanvasControl : MonoBehaviour
     private bool rightGripped = false;
     private bool leftGripped = false;
 
+    private float timer = 0;
+    // amount in seconds required between button presses
+    private float pressTimeGap = 0.25f;
 
     // Start is called before the first frame update
     void Trigger()
@@ -59,7 +62,10 @@ public class CanvasControl : MonoBehaviour
             GetDevice();
         }
 
-        OnTriggerStay();
+        // make sure button only gets pressed every 0.1 seconds
+        if(timer > pressTimeGap) OnTriggerStay();
+
+        timer += Time.deltaTime;
     }
 
     private void OnTriggerStay()
@@ -67,10 +73,12 @@ public class CanvasControl : MonoBehaviour
         if (rightController.TryGetFeatureValue(CommonUsages.primaryButton, out rightGripped) && rightGripped)
         {
             Trigger();
+            timer = 0;
         }
         if (leftController.TryGetFeatureValue(CommonUsages.primaryButton, out leftGripped) && leftGripped)
         {
             Trigger();
+            timer = 0;
         }
     }
 }
