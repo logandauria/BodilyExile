@@ -153,7 +153,10 @@ public class BallMovement : MonoBehaviour
         }
         lhandPreviousPos1 = leftHand.transform.position;
         rhandPreviousPos1 = rightHand.transform.position;
-        audioFilter.decayTime = Vector3.Distance(transform.position, leftHand.transform.position);
+        float dist = Vector3.Distance(transform.position, leftHand.transform.position);
+        audioFilter.decayTime = dist;
+        audioFilter.decayHFRatio = dist/10;
+        audioFilter.dryLevel = -dist*500;
         if (timer % 0.02f < 0.01f)
         {
             previousRotVelocity = this.transform.localEulerAngles;
