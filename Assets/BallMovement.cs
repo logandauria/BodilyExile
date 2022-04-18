@@ -58,7 +58,7 @@ public class BallMovement : MonoBehaviour
 
     // VARIABLES TO INFLUENCE ORB VELOCITIES
     private float comebackSpeed = 0.5f;
-    private float throwSpeedDamper = 5f;
+    private float throwSpeedDamper = 10f;
     private float rotDamper = 20f;
 
     private bool needToLetGo = false;
@@ -153,12 +153,14 @@ public class BallMovement : MonoBehaviour
         }
         lhandPreviousPos1 = leftHand.transform.position;
         rhandPreviousPos1 = rightHand.transform.position;
+        audioFilter.decayTime = Vector3.Distance(transform.position, leftHand.transform.position);
         if (timer % 0.02f < 0.01f)
         {
             previousRotVelocity = this.transform.localEulerAngles;
+        } else if(timer % 0.1f < 0.05f)
+        {
             rhandPreviousPos2 = rightHand.transform.position;
-            rhandPreviousPos2 = rightHand.transform.position;
-
+            lhandPreviousPos2 = rightHand.transform.position;
         }
         //transform.eulerAngles = new Vector3(initRot.x, initRot.y, transform.eulerAngles.z);
     }
@@ -268,14 +270,14 @@ public class BallMovement : MonoBehaviour
             } else if (velocityTimer < .2f)
             {
                 // combine velocities of the 2 last picked hand positions of both hands
-                combinedVelocity = (rhandPreviousPos1 - rightHand.transform.position) / (Time.deltaTime * throwSpeedDamper) + 
-                                    (lhandPreviousPos1 - leftHand.transform.position) / (Time.deltaTime * throwSpeedDamper) + 
+                combinedVelocity = (rhandPreviousPos1 - rightHand.transform.position) / (Time.deltaTime * throwSpeedDamper) +
+                                    (lhandPreviousPos1 - leftHand.transform.position) / (Time.deltaTime * throwSpeedDamper) / 2;/* + 
                                     (rhandPreviousPos2 - rightHand.transform.position) / (Time.deltaTime * throwSpeedDamper) + 
-                                    (lhandPreviousPos2 - leftHand.transform.position) / (Time.deltaTime * throwSpeedDamper) / 4 ;
+                                    (lhandPreviousPos2 - leftHand.transform.position) / (Time.deltaTime * throwSpeedDamper) / 4 ;*/
             }
             else
             {
-                combinedVelocity = (rhandPreviousPos1 - rightHand.transform.position) / (Time.deltaTime * throwSpeedDamper) + (rhandPreviousPos1 - rightHand.transform.position) / (Time.deltaTime * throwSpeedDamper) / 2;
+                combinedVelocity = (rhandPreviousPos1 - rightHand.transform.position) / (Time.deltaTime * throwSpeedDamper) + (rhandPreviousPos2 - rightHand.transform.position) / (Time.deltaTime * throwSpeedDamper) / 2;
             }
             rotVelocity = (previousRotVelocity - this.transform.eulerAngles) / rotDamper;
         }
@@ -299,9 +301,9 @@ public class BallMovement : MonoBehaviour
                 // combine velocities of the 2 last picked hand positions
 
                 combinedVelocity = (rhandPreviousPos1 - rightHand.transform.position) / (Time.deltaTime * throwSpeedDamper) +
-                                    (lhandPreviousPos1 - leftHand.transform.position) / (Time.deltaTime * throwSpeedDamper) +
-                                    (rhandPreviousPos2 - rightHand.transform.position) / (Time.deltaTime * throwSpeedDamper) +
-                                    (lhandPreviousPos2 - leftHand.transform.position) / (Time.deltaTime * throwSpeedDamper) / 4;
+                                    (lhandPreviousPos1 - leftHand.transform.position) / (Time.deltaTime * throwSpeedDamper) / 2;/* + 
+                                    (rhandPreviousPos2 - rightHand.transform.position) / (Time.deltaTime * throwSpeedDamper) + 
+                                    (lhandPreviousPos2 - leftHand.transform.position) / (Time.deltaTime * throwSpeedDamper) / 4 ;*/
             }
             else
             {

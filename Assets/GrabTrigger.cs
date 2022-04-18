@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
+
 
 public class GrabTrigger : MonoBehaviour
 {
@@ -17,21 +20,50 @@ public class GrabTrigger : MonoBehaviour
     private bool rightGripped = false;
     private bool leftGripped = false;
 
+    //public GameObject phaseToLoad;
+    //public int levelToLoad;
+    //public Material fadeMat;
+
     // INSPECTOR INPUT
     // hand objects
     public GameObject rightHand;
     public GameObject leftHand;
 
+    public UnityEvent myEvent;
+
     private bool rightHandOnObject = false;
     private bool leftHandOnObject = false;
 
+    private bool grabbed = false;
 
     // Start is called before the first frame update
     void Trigger()
     {
-        
+        grabbed = true;
+        myEvent.Invoke();
+        //FadeToLevel();
+        //transform.parent.gameObject.SetActive(false);
+        //phaseToLoad.SetActive(true);
+        //SceneManager.LoadScene(levelToLoad);
     }
 
+    /*public void FadeToLevel()
+    {
+        while (fadeMat.color.a < 255)
+        {
+            fadeMat.color = new Color(0, 0, 0, Mathf.Lerp(fadeMat.color.a, 255, Time.deltaTime));
+        }
+        //SceneManager.LoadScene(levelToLoad);
+    }
+
+    public void StartLevel()
+    {
+        while (fadeMat.color.a > 0)
+        {
+            fadeMat.color = new Color(0, 0, 0, Mathf.Lerp(fadeMat.color.a, 0, Time.deltaTime));
+        }
+        Debug.Log("faded in");
+    }*/
 
     // retrieve and assign controller devices
     void GetDevice()
@@ -59,8 +91,7 @@ public class GrabTrigger : MonoBehaviour
         {
             GetDevice();
         }
-
-        OnTriggerStay();
+        if(!grabbed) OnTriggerStay();
     }
 
     private void OnTriggerStay()

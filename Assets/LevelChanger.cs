@@ -1,39 +1,55 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class LevelChanger : MonoBehaviour
 {
+    public GameObject[] phases;
+    public int currLevel = 0;
+    //public int levelToLoad;
+    //public GameObject fadeBox;
+    //private Renderer fadeRender;
 
-    public int levelToLoad;
-    public Material fadeMat;
+
+
+    //private bool fadeComplete = false;
 
     // Start is called before the first frame update
     void Start()
     {
         // start fade with full alpha
-        fadeMat.color = new Color(0,0,0,255);
-        StartLevel();
+        //fadeRender = fadeBox.GetComponent<Renderer>();
+        //fadeRender.material.color = new Color(0,0,0,255);
+        //StartLevel();
     }
 
-    public void FadeToLevel()
+    public void nextLevel()
     {
-        while (fadeMat.color.a < 255)
+        phases[currLevel].SetActive(false);
+        currLevel += 1;
+        phases[currLevel].SetActive(true);
+
+        //FadeToLevel();
+        //SceneManager.LoadScene(sceneToLoad);
+    }
+
+    /*public void FadeToLevel()
+    {
+        while (fadeRender.material.color.a < 255)
         {
-            fadeMat.color = new Color(0, 0, 0, Mathf.Lerp(fadeMat.color.a, 255, Time.deltaTime));
+            fadeRender.material.color = new Color(0, 0, 0, Mathf.Lerp(fadeRender.material.color.a, 255, Time.deltaTime));
         }
-        SceneManager.LoadScene(levelToLoad);
+        //SceneManager.LoadScene(levelToLoad);
     }
 
     public void StartLevel()
     {
-        while(fadeMat.color.a > 0)
+        while(fadeRender.material.color.a > 0)
         {
-            fadeMat.color = new Color(0, 0, 0, Mathf.Lerp(fadeMat.color.a, 0, Time.deltaTime));
+            fadeRender.material.color = new Color(0, 0, 0, Mathf.Lerp(fadeRender.material.color.a, 0, Time.deltaTime));
         }
         Debug.Log("faded in");
-    }
+    }*/
 
 
     // Update is called once per frame
