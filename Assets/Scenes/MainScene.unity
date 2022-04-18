@@ -972,6 +972,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f019d560e424d646978297cd8bb15d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioFilter: {fileID: 0}
   rightHand: {fileID: 135046893}
   leftHand: {fileID: 1762845842}
   snapPositions:
@@ -1850,6 +1851,8 @@ GameObject:
   - component: {fileID: 1412575491}
   - component: {fileID: 1412575490}
   - component: {fileID: 1412575489}
+  - component: {fileID: 1412575493}
+  - component: {fileID: 1412575492}
   m_Layer: 0
   m_Name: audiosource
   m_TagString: Untagged
@@ -1980,6 +1983,39 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!165 &1412575492
+AudioHighPassFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1412575488}
+  m_Enabled: 1
+  m_CutoffFrequency: 22000
+  m_HighpassResonanceQ: 1
+--- !u!164 &1412575493
+AudioReverbFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1412575488}
+  m_Enabled: 1
+  m_DryLevel: 0
+  m_Room: 0
+  m_RoomHF: 0
+  m_DecayTime: 0.1
+  m_DecayHFRatio: 0.5
+  m_ReflectionsLevel: -10000
+  m_ReverbLevel: 0
+  m_ReverbDelay: 0.04
+  m_Diffusion: 100
+  m_Density: 100
+  m_HFReference: 5000
+  m_RoomLF: 0
+  m_LFReference: 250
+  m_ReflectionsDelay: 0
+  m_ReverbPreset: 27
 --- !u!1 &1542084059
 GameObject:
   m_ObjectHideFlags: 0
@@ -2227,7 +2263,7 @@ Transform:
   m_GameObject: {fileID: 1644773941}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.530806, y: 10.18202, z: -12.061302}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1379679410}
