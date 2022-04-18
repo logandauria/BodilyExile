@@ -2171,7 +2171,7 @@ AudioReverbFilter:
   m_Room: 0
   m_RoomHF: 0
   m_DecayTime: 0.1
-  m_DecayHFRatio: 1.002
+  m_DecayHFRatio: 0.1
   m_ReflectionsLevel: -10000
   m_ReverbLevel: 0
   m_ReverbDelay: 0.04
