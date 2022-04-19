@@ -163,6 +163,8 @@ public class BallMovement : MonoBehaviour
         }
         if (timer % 0.02f < 0.01f)
         {
+            lhandPreviousPos1 = leftHand.transform.position;
+            rhandPreviousPos1 = rightHand.transform.position;
             rhandPreviousPos2 = rightHand.transform.position;
             lhandPreviousPos2 = rightHand.transform.position;
             previousRotVelocity = this.transform.localEulerAngles;
@@ -216,7 +218,6 @@ public class BallMovement : MonoBehaviour
 
             needToLetGo = true;
             leftController.SendHapticImpulse(1, 0.1f);
-
         }
         else
         {
