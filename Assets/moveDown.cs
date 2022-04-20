@@ -5,7 +5,7 @@ using UnityEngine;
 public class moveDown : MonoBehaviour
 {
 
-    private bool trigger = true;
+    private bool trigger = false;
     private float moveY = 0.01f;
     private float rotY = 1f;
 

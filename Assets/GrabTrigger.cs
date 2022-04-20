@@ -35,12 +35,17 @@ public class GrabTrigger : MonoBehaviour
     private bool leftHandOnObject = false;
 
     private bool grabbed = false;
+    private bool triggerOnce = false;
 
     // Start is called before the first frame update
     void Trigger()
     {
         grabbed = true;
-        myEvent.Invoke();
+        if (!triggerOnce)
+        {
+            myEvent.Invoke();
+            triggerOnce = true;
+        }
         //FadeToLevel();
         //transform.parent.gameObject.SetActive(false);
         //phaseToLoad.SetActive(true);
