@@ -204,12 +204,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4627689130662128930, guid: 68f4944f4945d854e8f71cdacfed5a03, type: 3}
+      propertyPath: timeStep
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4627689130662128930, guid: 68f4944f4945d854e8f71cdacfed5a03, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4627689130662128930, guid: 68f4944f4945d854e8f71cdacfed5a03, type: 3}
       propertyPath: randomRange
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4627689130662128930, guid: 68f4944f4945d854e8f71cdacfed5a03, type: 3}
+      propertyPath: triggerTime
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 4627689130662128930, guid: 68f4944f4945d854e8f71cdacfed5a03, type: 3}
       propertyPath: restVector.x
@@ -241,7 +249,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4627689130662128930, guid: 68f4944f4945d854e8f71cdacfed5a03, type: 3}
       propertyPath: beatVectorUpperBound.x
-      value: 0.15
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 4627689130662128930, guid: 68f4944f4945d854e8f71cdacfed5a03, type: 3}
       propertyPath: beatVectorUpperBound.y
@@ -249,7 +257,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4627689130662128930, guid: 68f4944f4945d854e8f71cdacfed5a03, type: 3}
       propertyPath: beatVectorUpperBound.z
-      value: 5
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4627689130662128934, guid: 68f4944f4945d854e8f71cdacfed5a03, type: 3}
       propertyPath: m_Name
@@ -644,7 +652,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1435828092}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cd4998a4e6c387c41acb72afd3312ab9, type: 3}
   m_Name: 
@@ -653,11 +661,11 @@ MonoBehaviour:
   timeStep: 0.5
   timeToBeat: 0.001
   restSmoothTime: 0.5
-  beatVectorUpperBound: {x: 0.2, y: 10, z: 5}
+  beatVectorUpperBound: {x: 0.2, y: 5, z: 5}
   beatVectorLowerBound: {x: 0.01, y: 0.1, z: 0.1}
   restVector: {x: 0.01, y: 0.1, z: 0.1}
   colorBlendPercent: 0
-  triggerTime: 0.5
+  triggerTime: 0.2
 --- !u!1 &2001339728
 GameObject:
   m_ObjectHideFlags: 0
