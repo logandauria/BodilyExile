@@ -11,8 +11,6 @@ class MarkovTest: MonoBehaviour {
     // each needs its own `AudioSource`.
     // Rather than manually configuring each one to be mutually exclusive,
     // for now we'll just set n of them.
-    //
-    // (for me: note that audioClips is public so we can set the files in Unity for testing)
     private AudioSource[] audioSources = new AudioSource[28];
 
     // AudioClips from Bodily Exile (track1)
@@ -43,10 +41,17 @@ class MarkovTest: MonoBehaviour {
 
         // Load in all audio data
         loadAudioClips();
-
-        // FIXME: Starting coroutines in Start() vs. Update()?
-        // Enable playing of audio now that we've initialized everything
         running = true;
+
+
+
+        // exileClips = new AudioClip[,];
+        // (Array sourceArray, int sourceIndex, Array destinationArray, int destinationIndex, int length);
+        // Array.Copy(exileGuitarClips)
+
+        // damn
+
+
 
         // TODO: Make into array of coroutines or something
 
@@ -57,15 +62,32 @@ class MarkovTest: MonoBehaviour {
         // load the file into memory (src: https://bit.ly/35EWiI4),
         // so timers should be triggered to start *after* all
         // sounds have been initialized.
-        StartCoroutine(PlayTrack0Loop(0));
+        setupPhase0();
+    }
+
+    private void setupPhase0() {
+
+        // Phase 0 is defined to play two vocal tracks
+        StartCoroutine(PlayTrack(0, Track.ExileLead, 0));
+        StartCoroutine(PlayTrack(0, Track.ExileHarmony, 0));
+
+    }
+
+    private void setupPhase1() {
+
+        // StopCoroutine(PlayTrack(Track.ExileLead, 0));
+        // StopCoroutine(PlayTrack(Track.ExileHarmony, 0));
+
+        StartCoroutine(PlayTrack(1, Track.ExileLead, 0));
     }
 
 
-    private IEnumerator PlayTrack0Loop(int phase) {
+    private IEnumerator PlayTrack(int phase, Track track, int sample) {
 
-        // TODO: Generalize to all tracks
         while(true) {
-            if (Markov.shouldPlay(phase, Track.Track0, 0)) {
+
+            // Phase 0 has two vocals, so, attempt to play the two vocals
+            if (Markov.shouldPlay(phase, track, sample)) {
                 Debug.Log("ASDF Playing!");
                 audioSources[0].Play();
             }
@@ -79,6 +101,8 @@ class MarkovTest: MonoBehaviour {
         }
 
         // TODO: May move track coroutines in here
+        // FIXME: Starting coroutines in Start() vs. Update()?
+        // Enable playing of audio now that we've initialized everything
     }
 
     private void loadAudioClips() {
@@ -110,11 +134,13 @@ class MarkovTest: MonoBehaviour {
     }
 }
 
+/// The type of track per song
 enum Track: int {
-    Track0 = 0,
-    Track1 = 1,
-    Track2 = 2,
-    Track3 = 3
+    ExileGuitar  = 0,
+    ExileHarmony = 1,
+    ExileLead    = 2,
+    ExileWhisper = 3
+    // TODO: More for MilkyBlue
 }
 
 
@@ -145,16 +171,37 @@ class Markov {
         // Phase 1 - (two vocals + guitar)
         //           Two vocals interact w.h.p, guitar is constant
         //
-        //  {                sample1 sample2 sample3
-        //   track1-vocals {   0.5     0.6    0.4    }
-        //   track2-vocals {   0.5     0.4    0.1    }
-        //   guitar        {   0.8     0.2    ___    }
+        //  {                  sample1 sample2 sample3
+        //   track1-lead     {   0.5     0.6    0.4    }
+        //   track2-harmony  {   0.5     0.4    0.1    }
+        //   guitar          {   0.8     0.2    0.0    }
         //  }
         //
         //
         phase1prob = new double[,] {{ 0.5, 0.6, 0.4 },
                                     { 0.5, 0.4, 0.1 },
                                     { 0.8, 0.2, 0.0 }};
+
+
+        // Phase 2 - (two vocals + guitar + other vocals )
+        //           Two vocals interact w.h.p, guitar is constant
+        //
+        //  {                  sample1 sample2 sample3
+        //   track1-lead     {   0.5     0.6    0.4    }
+        //   track2-harmony  {   0.5     0.4    0.1    }
+        //   guitar          {   0.8     0.2    0.0    }
+        //   track2-harmony  {   0.5     0.4    0.1    }
+        //   track2-harmony  {   0.5     0.4    0.1    }
+        //   track2-harmony  {   0.5     0.4    0.1    }
+        //   track2-harmony  {   0.5     0.4    0.1    }
+        //  }
+        //
+        //
+        phase1prob = new double[,] {{ 0.5, 0.6, 0.4 },
+                                    { 0.5, 0.4, 0.1 },
+                                    { 0.8, 0.2, 0.0 }};
+
+
 
 
         // phases = new double[,,] {phase0prob, phase1prob, {{}}};
@@ -167,12 +214,10 @@ class Markov {
         // FIXME: Global indices for track values vs. per-phase index
         // TODO: make dynamic phases (see constructor)
 
+        // TODO: Determine phase indexing
+
         double curProb = phase0prob[(int) track, sample];
         var randVal = Random.value;
-
-        Debug.Log("ASDF curProb: " + curProb);
-        Debug.Log("ASDF randVal: " + randVal);
-
         return randVal <= curProb;
     }
 
