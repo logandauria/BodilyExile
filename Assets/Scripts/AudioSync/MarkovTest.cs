@@ -2,6 +2,7 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(AudioSource))]
 class MarkovTest: MonoBehaviour {
@@ -40,9 +41,9 @@ class MarkovTest: MonoBehaviour {
     public AudioClip[] blueHarmonyClips   = new AudioClip[BLUE_NUM_HARMONY];
     public AudioClip[] blueLeadClips      = new AudioClip[BLUE_NUM_LEAD];
 
-    // TODO: Samples from the other track
 
     private bool running = false;
+    private List<Coroutine> runningPhases = new List<Coroutine>();
 
     void Start() {
 
@@ -62,25 +63,64 @@ class MarkovTest: MonoBehaviour {
         // load the file into memory (src: https://bit.ly/35EWiI4),
         // so timers should be triggered to start *after* all
         // sounds have been initialized.
-        setupPhase0();
+
+        StartCoroutine(PhaseManager());
+    }
+
+
+
+    private IEnumerator PhaseManager() {
+
+        // TODO: Refactor phase numbers to align with this new scheme
+
+        // Phase 0 (intro, no music)
+        Debug.Log("[Markov] Phase 0 ==========");
+        yield return new WaitForSeconds(2);
+
+        // Phase 1 (40sec duration)
+        Debug.Log("[Markov] Phase 1 ==========");
+        clearPhases();
+        setupPhase1();
+        yield return new WaitForSeconds(40);
+
+        // Phase 2 (todo)
+        Debug.Log("[Markov] Phase 2 ==========");
+        clearPhases();
+        setupPhase2();
+        yield return new WaitForSeconds(135);
+
+        // Phase 3 (todo)
+        Debug.Log("[Markov] Phase 3 ==========");
+        clearPhases();
+        setupPhase3();
+        yield return new WaitForSeconds(5);
+    }
+
+
+    /// Stop any running phases (coroutines)
+    private void clearPhases() {
+        foreach (Coroutine coroutine in runningPhases) {
+            StopCoroutine(coroutine);
+        }
     }
 
     private void setupPhase0() {
 
         // Phase 0 is defined to play two vocal tracks
-        StartCoroutine(PlayTrack(0, Track.ExileLead, 0));
-        StartCoroutine(PlayTrack(0, Track.BlueGuitar, 0));
-
+        runningPhases.Add(StartCoroutine(PlayTrack(0, Track.ExileLead, 0)));
+        runningPhases.Add(StartCoroutine(PlayTrack(0, Track.BlueGuitar, 0)));
     }
 
     private void setupPhase1() {
-
-        // StopCoroutine(PlayTrack(Track.ExileLead, 0));
-        // StopCoroutine(PlayTrack(Track.ExileHarmony, 0));
-
-        StartCoroutine(PlayTrack(1, Track.ExileLead, 0));
+        runningPhases.Add(StartCoroutine(PlayTrack(1, Track.ExileLead, 0)));
     }
 
+    private void setupPhase2() {
+        // TODO
+    }
+    private void setupPhase3() {
+        // TODO
+    }
 
     private IEnumerator PlayTrack(int phase, Track track, int sample) {
 
