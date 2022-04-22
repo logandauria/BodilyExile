@@ -89,7 +89,28 @@ class MarkovTest: MonoBehaviour {
             // Phase 0 has two vocals, so, attempt to play the two vocals
             if (Markov.shouldPlay(phase, track, sample)) {
                 Debug.Log("ASDF Playing!");
-                audioSources[0].Play();
+                switch (track) {
+                    case Track.ExileGuitar: {
+                        Debug.Log("ASDF Playing Guitar!");
+                        audioSources[0 + sample].Play();
+                        break;
+                    }
+                    case Track.ExileHarmony: {
+                        Debug.Log("ASDF Playing Harmony!");
+                        audioSources[NUM_GUITAR + sample].Play();
+                        break;
+                    }
+                    case Track.ExileLead: {
+                        Debug.Log("ASDF Playing Lead!");
+                        audioSources[NUM_GUITAR + NUM_HARMONY + sample].Play();
+                        break;
+                    }
+                    case Track.ExileWhisper: {
+                        Debug.Log("ASDF Playing Whisper!");
+                        audioSources[NUM_GUITAR + NUM_HARMONY + NUM_LEAD + sample].Play();
+                        break;
+                    }
+                }
             }
             yield return new WaitForSeconds(audioSources[0].clip.length);
         }
@@ -208,17 +229,37 @@ class Markov {
         // TODO: Add more as implemented.
     }
 
+    /// Determines if a given track+sample should be played
+    /// on a phase.
     public static bool shouldPlay(int phase, Track track, int sample) {
 
-        // FIXME: sample vs. track audiosources (needs med refactor)
-        // FIXME: Global indices for track values vs. per-phase index
         // TODO: make dynamic phases (see constructor)
 
-        // TODO: Determine phase indexing
+        var index = mapTrackToIndex(track, phase);
+        if (index == -1) {
+            Debug.LogError("Invalid index for phase" + phase + ", track " + track + ", sample " + sample);
+            return false;
+        }
 
-        double curProb = phase0prob[(int) track, sample];
+        Debug.Log("phase " + phase + ", track " + track + ", sample " + sample);
+        double curProb = phase0prob[index, sample];
         var randVal = Random.value;
         return randVal <= curProb;
     }
 
+    /// A little hacky -- maps track indices to the probability matrices defined
+    /// manually in the constructor.
+    private static int mapTrackToIndex(Track track, int phase) {
+        if (phase == 0) {
+            switch (track) {
+                case Track.ExileGuitar:  { return -1; break; }
+                case Track.ExileHarmony: { return 0; break;  }
+                case Track.ExileLead:    { return 1; break;  }
+                case Track.ExileWhisper: { return -1; break; }
+            }
+        } else if (phase == 1) {
+            // TODO
+        }
+        return 0;
+    }
 }
