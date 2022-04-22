@@ -12,12 +12,12 @@ class MarkovTest: MonoBehaviour {
     // each needs its own `AudioSource`.
     // Rather than manually configuring each one to be mutually exclusive,
     // for now we'll just set n of them.
-    private const int TOTAL_SOURCE = 44;
+    private const int TOTAL_SOURCE = 45;
     private AudioSource[] audioSources = new AudioSource[TOTAL_SOURCE];
 
     // AudioClips from Bodily Exile (track1)
 
-    public const int EXILE_NUM_GUITAR   = 7;
+    public const int EXILE_NUM_GUITAR   = 8;
     public const int EXILE_NUM_HARMONY  = 6;
     public const int EXILE_NUM_LEAD     = 6;
     public const int EXILE_NUM_WHISPERS = 9;
@@ -64,36 +64,8 @@ class MarkovTest: MonoBehaviour {
         // so timers should be triggered to start *after* all
         // sounds have been initialized.
 
-        StartCoroutine(PhaseManager());
-    }
-
-
-
-    private IEnumerator PhaseManager() {
-
-        // TODO: Refactor phase numbers to align with this new scheme
-
-        // Phase 0 (intro, no music)
-        Debug.Log("[Markov] Phase 0 ==========");
-        yield return new WaitForSeconds(2);
-
-        // Phase 1 (40sec duration)
-        Debug.Log("[Markov] Phase 1 ==========");
-        clearPhases();
+        // TODO: @Logan Hook into Event system
         setupPhase1();
-        yield return new WaitForSeconds(40);
-
-        // Phase 2 (todo)
-        Debug.Log("[Markov] Phase 2 ==========");
-        clearPhases();
-        setupPhase2();
-        yield return new WaitForSeconds(135);
-
-        // Phase 3 (todo)
-        Debug.Log("[Markov] Phase 3 ==========");
-        clearPhases();
-        setupPhase3();
-        yield return new WaitForSeconds(5);
     }
 
 
@@ -104,22 +76,31 @@ class MarkovTest: MonoBehaviour {
         }
     }
 
-    private void setupPhase0() {
+    // MARK: Phase Hooks. **Must** call clearPhase() at start of each phase to prevent overlap.
 
-        // Phase 0 is defined to play two vocal tracks
-        runningPhases.Add(StartCoroutine(PlayTrack(0, Track.ExileLead, 0)));
-        runningPhases.Add(StartCoroutine(PlayTrack(0, Track.BlueGuitar, 0)));
+    public void setupPhase0() {
+        clearPhases();
     }
 
-    private void setupPhase1() {
-        runningPhases.Add(StartCoroutine(PlayTrack(1, Track.ExileLead, 0)));
+    public void setupPhase1() {
+        clearPhases();
+        runningPhases.Add(StartCoroutine(PlayTrack(1, Track.ExileHarmony, 1)));
+        runningPhases.Add(StartCoroutine(PlayTrack(1, Track.BlueLead, 1)));
+        runningPhases.Add(StartCoroutine(PlayTrack(1, Track.ExileGuitar, 8)));
     }
 
-    private void setupPhase2() {
+    public void setupPhase2() {
+        clearPhases();
         // TODO
     }
-    private void setupPhase3() {
+    public void setupPhase3() {
+        clearPhases();
         // TODO
+    }
+
+    public void setupPhase4() {
+        clearPhases();
+        // TODO: Cute piano cover of Bodily Exile
     }
 
     private IEnumerator PlayTrack(int phase, Track track, int sample) {
@@ -129,7 +110,6 @@ class MarkovTest: MonoBehaviour {
             // Default curSource
             AudioSource curSource = audioSources[0];
 
-            // Phase 0 has two vocals, so, attempt to play the two vocals
             if (Markov.shouldPlay(phase, track, sample)) {
                 switch (track) {
                     case Track.ExileGuitar: {
@@ -168,6 +148,10 @@ class MarkovTest: MonoBehaviour {
                     }
                 }
             }
+
+            // Retrigger the current sample's chance to play
+            // at the end of every sample duration,
+            // regardless if it played on the current cycle or not.
             yield return new WaitForSeconds(curSource.clip.length);
         }
     }
@@ -188,6 +172,7 @@ class MarkovTest: MonoBehaviour {
         // MARK: Exile
 
         for (int i = 0; i < EXILE_NUM_GUITAR; i++)   {
+            Debug.Log("asdf at " + i + ": " + Resources.Load<AudioClip>("AudioStems/Exile/Guitar-" + (i + 1)));
             exileGuitarClips[i] = Resources.Load<AudioClip>("AudioStems/Exile/Guitar-" + (i + 1));
             audioSources[i].clip = exileGuitarClips[i];
         }
@@ -247,6 +232,8 @@ enum Track: int {
     BlueGuitar   = 4,
     BlueHarmony  = 5,
     BlueLead     = 6
+
+    // TODO: Add piano cover track
 }
 
 
@@ -254,39 +241,37 @@ class Markov {
 
     static readonly double[,] phase0prob;
     static readonly double[,] phase1prob;
-    static readonly double[,,] phases;
+    static readonly double[,] phase2prob;
+    static readonly double[,] phase3prob;
+    static readonly double[,] phase4prob;
 
     static Markov() {
 
         // We need to create probability matrices
         // for *each* phase of the project.
 
-        // Phase 0 - (two vocals)
-        //           Very low probability of second vocal triggering.
+        // Phase 0 - (opening scene)
+        //           Nothing is playing.
         //
-        //  {                sample1 sample2 sample3
-        //   track1-vocals {   0.5     0.6    0.4    }
-        //   track2-vocals {   0.2     0.1    0.1    }
-        //  }
+        //  {}
         //
         //
-        phase0prob = new double[,] {{ 1.0, 0.6, 0.4 },
-                                    { 0.9, 0.9, 0.1 }};
+        phase0prob = new double[,] {{}};
 
 
         // Phase 1 - (two vocals + guitar)
         //           Two vocals interact w.h.p, guitar is constant
         //
-        //  {                  sample1 sample2 sample3
-        //   track1-lead     {   0.5     0.6    0.4    }
-        //   track2-harmony  {   0.5     0.4    0.1    }
-        //   guitar          {   0.8     0.2    0.0    }
+        //  {                sample1 sample2 sample3
+        //   exile-harmony {   0.5     0.6    0.4    }
+        //   blue-lead     {   0.5     0.4    0.1    }
+        //   exile-guitar  {   0.8     0.0    0.0    }
         //  }
         //
         //
         phase1prob = new double[,] {{ 0.5, 0.6, 0.4 },
                                     { 0.5, 0.4, 0.1 },
-                                    { 0.8, 0.2, 0.0 }};
+                                    { 1.0, 0.0, 0.0 }};
 
 
         // Phase 2 - (two vocals + guitar + other vocals )
@@ -303,19 +288,45 @@ class Markov {
         //  }
         //
         //
-        phase1prob = new double[,] {{ 0.5, 0.6, 0.4 },
+        phase2prob = new double[,] {{ 0.5, 0.6, 0.4 },
                                     { 0.5, 0.4, 0.1 },
                                     { 0.8, 0.2, 0.0 }};
 
+        // Phase 3 - (two vocals + guitar + other vocals )
+        //           Two vocals interact w.h.p, guitar is constant
+        //
+        //  {                  sample1 sample2 sample3
+        //   track1-lead     {   0.5     0.6    0.4    }
+        //   track2-harmony  {   0.5     0.4    0.1    }
+        //   guitar          {   0.8     0.2    0.0    }
+        //   track2-harmony  {   0.5     0.4    0.1    }
+        //   track2-harmony  {   0.5     0.4    0.1    }
+        //   track2-harmony  {   0.5     0.4    0.1    }
+        //   track2-harmony  {   0.5     0.4    0.1    }
+        //  }
+        //
+        //
+        phase2prob = new double[,] {{ 0.5, 0.6, 0.4 },
+                                    { 0.5, 0.4, 0.1 },
+                                    { 0.8, 0.2, 0.0 }};
 
+        // Phase 4 - (credits)
+        //           Just a cute piano cover of Bodily Exile.
+        //
+        //  {                  sample1
+        //   piano-cover     {   1.0   }
+        //  }
+        //
+        //
+        phase2prob = new double[,] {{ 1.0 }};
 
-
-        // phases = new double[,,] {phase0prob, phase1prob, {{}}};
-        // TODO: Add more as implemented.
     }
 
     /// Determines if a given track+sample should be played
     /// on a phase.
+    ///
+    /// Note: Samples are NOT ZERO INDEXED.
+    /// This is to match the sample indexing in the file system, as exported by the DAW.
     public static bool shouldPlay(int phase, Track track, int sample) {
 
         // TODO: make dynamic phases (see constructor)
@@ -332,7 +343,22 @@ class Markov {
         }
 
         Debug.Log("[Markov] phase " + phase + ", track " + track + ", sample " + sample);
-        double curProb = phase0prob[index, sample];
+        double curProb = 0.0;
+        double[,] curProbArr = phase0prob;
+
+        // Pick prob array to use
+        switch (phase) {
+            case 0: curProbArr = phase0prob; break;
+            case 1: curProbArr = phase1prob; break;
+            case 2: curProbArr = phase2prob; break;
+            case 3: curProbArr = phase3prob; break;
+            case 4: curProbArr = phase4prob; break;
+            default: break;
+        }
+
+        // Retrieve probability from array
+        curProb = curProbArr[index, sample - 1];
+
         var randVal = Random.value;
         return randVal <= curProb;
     }
