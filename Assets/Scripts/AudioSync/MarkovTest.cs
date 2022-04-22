@@ -105,12 +105,16 @@ class MarkovTest: MonoBehaviour {
 
     private IEnumerator PlayTrack(int phase, Track track, int sample) {
 
+        // Turn into zero-indexed for simpler array indexing.
+        sample -= 1;
+
         while(true) {
 
             // Default curSource
             AudioSource curSource = audioSources[0];
 
-            if (Markov.shouldPlay(phase, track, sample)) {
+            // Undo zero index for shouldPlay call
+            if (Markov.shouldPlay(phase, track, sample + 1)) {
                 switch (track) {
                     case Track.ExileGuitar: {
                         Debug.Log("[Markov] Playing ExileGuitar!");
@@ -139,6 +143,12 @@ class MarkovTest: MonoBehaviour {
                     case Track.BlueGuitar: {
                         Debug.Log("[Markov] Playing BlueGuitar!");
                         curSource = audioSources[EXILE_OFFSET + sample];
+                        curSource.Play();
+                        break;
+                    }
+                    case Track.BlueLead: {
+                        Debug.Log("[Markov] Playing BlueLead!");
+                        curSource = audioSources[EXILE_OFFSET + BLUE_NUM_GUITAR + BLUE_NUM_HARMONY + sample];
                         curSource.Play();
                         break;
                     }
@@ -172,7 +182,6 @@ class MarkovTest: MonoBehaviour {
         // MARK: Exile
 
         for (int i = 0; i < EXILE_NUM_GUITAR; i++)   {
-            Debug.Log("asdf at " + i + ": " + Resources.Load<AudioClip>("AudioStems/Exile/Guitar-" + (i + 1)));
             exileGuitarClips[i] = Resources.Load<AudioClip>("AudioStems/Exile/Guitar-" + (i + 1));
             audioSources[i].clip = exileGuitarClips[i];
         }
@@ -269,9 +278,9 @@ class Markov {
         //  }
         //
         //
-        phase1prob = new double[,] {{ 0.5, 0.6, 0.4 },
-                                    { 0.5, 0.4, 0.1 },
-                                    { 1.0, 0.0, 0.0 }};
+        phase1prob = new double[,] {{ 0.5, 0.6, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0 },
+                                    { 0.5, 0.4, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0 },
+                                    { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0}};
 
 
         // Phase 2 - (two vocals + guitar + other vocals )
@@ -326,7 +335,6 @@ class Markov {
     /// on a phase.
     ///
     /// Note: Samples are NOT ZERO INDEXED.
-    /// This is to match the sample indexing in the file system, as exported by the DAW.
     public static bool shouldPlay(int phase, Track track, int sample) {
 
         // TODO: make dynamic phases (see constructor)
@@ -366,16 +374,14 @@ class Markov {
     /// A little hacky -- maps track indices to the probability matrices defined
     /// manually in the constructor.
     private static int mapTrackToIndex(Track track, int phase) {
-        if (phase == 0) {
+        if (phase == 1) {
             switch (track) {
-                case Track.ExileGuitar:  { return -1; break; }
-                case Track.ExileHarmony: { return 0; break;  }
-                case Track.ExileLead:    { return 0; break;  } // FIXME: set to 0 for testing
-                case Track.ExileWhisper: { return -1; break; }
-                case Track.BlueGuitar:   { return 1; break;  } // FIXME: set to 1 for testing (flip above)
+                case Track.ExileHarmony: { return 0; break; }
+                case Track.BlueLead:     { return 1; break; }
+                case Track.ExileGuitar:  { return 2; break; }
                 default: break;
             }
-        } else if (phase == 1) {
+        } else if (phase == 2) {
             // TODO
         }
         return 0;
