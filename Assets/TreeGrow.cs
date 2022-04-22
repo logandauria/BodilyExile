@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class TreeGrow : MonoBehaviour
 {
+    public float size = 1;
+    public float timeDamper = 6;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,7 +18,7 @@ public class TreeGrow : MonoBehaviour
     {
         if(transform.localScale.x < 1)
         {
-            transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(1, 1, 1), Time.deltaTime / 4);
+            transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(size, size, size), Time.deltaTime / timeDamper);
         }
     }
 }
