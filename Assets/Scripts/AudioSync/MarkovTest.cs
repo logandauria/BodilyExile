@@ -91,7 +91,6 @@ class MarkovTest: MonoBehaviour {
 
             // Phase 0 has two vocals, so, attempt to play the two vocals
             if (Markov.shouldPlay(phase, track, sample)) {
-                Debug.Log("[Markov] Playing!");
                 switch (track) {
                     case Track.ExileGuitar: {
                         Debug.Log("[Markov] Playing ExileGuitar!");
@@ -171,6 +170,8 @@ class MarkovTest: MonoBehaviour {
             audioSources[offset + i].clip = exileWhispersClips[i];
         }
 
+        offset += EXILE_NUM_WHISPERS;
+
         // MARK: Blue
 
         // Note: re-using above offset as `audioSources` is "globally" indexed
@@ -178,7 +179,7 @@ class MarkovTest: MonoBehaviour {
 
         for (int i = 0; i < BLUE_NUM_GUITAR; i++)   {
             blueGuitarClips[i] = Resources.Load<AudioClip>("AudioStems/Blue/Guitar-" + (i + 1));
-            audioSources[i].clip = blueGuitarClips[i];
+            audioSources[offset + i].clip = blueGuitarClips[i];
         }
 
         offset += BLUE_NUM_GUITAR;
