@@ -88,25 +88,25 @@ class MarkovTest: MonoBehaviour {
 
             // Phase 0 has two vocals, so, attempt to play the two vocals
             if (Markov.shouldPlay(phase, track, sample)) {
-                Debug.Log("ASDF Playing!");
+                Debug.Log("[Markov] Playing!");
                 switch (track) {
                     case Track.ExileGuitar: {
-                        Debug.Log("ASDF Playing Guitar!");
+                        Debug.Log("[Markov] Playing Guitar!");
                         audioSources[0 + sample].Play();
                         break;
                     }
                     case Track.ExileHarmony: {
-                        Debug.Log("ASDF Playing Harmony!");
+                        Debug.Log("[Markov] Playing Harmony!");
                         audioSources[NUM_GUITAR + sample].Play();
                         break;
                     }
                     case Track.ExileLead: {
-                        Debug.Log("ASDF Playing Lead!");
+                        Debug.Log("[Markov] Playing Lead!");
                         audioSources[NUM_GUITAR + NUM_HARMONY + sample].Play();
                         break;
                     }
                     case Track.ExileWhisper: {
-                        Debug.Log("ASDF Playing Whisper!");
+                        Debug.Log("[Markov] Playing Whisper!");
                         audioSources[NUM_GUITAR + NUM_HARMONY + NUM_LEAD + sample].Play();
                         break;
                     }
@@ -237,11 +237,11 @@ class Markov {
 
         var index = mapTrackToIndex(track, phase);
         if (index == -1) {
-            Debug.LogError("Invalid index for phase" + phase + ", track " + track + ", sample " + sample);
+            Debug.LogError("[Markov] Invalid index for phase" + phase + ", track " + track + ", sample " + sample);
             return false;
         }
 
-        Debug.Log("phase " + phase + ", track " + track + ", sample " + sample);
+        Debug.Log("[Markov] phase " + phase + ", track " + track + ", sample " + sample);
         double curProb = phase0prob[index, sample];
         var randVal = Random.value;
         return randVal <= curProb;
