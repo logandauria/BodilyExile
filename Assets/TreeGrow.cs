@@ -16,7 +16,7 @@ public class TreeGrow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(transform.localScale.x < 1)
+        if(transform.localScale.x < size)
         {
             transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(size, size, size), Time.deltaTime / timeDamper);
         }

@@ -62,8 +62,8 @@ public class SoulControl : MonoBehaviour
             //Debug.Log("AXIS Y: " + axis.y);
             if(axis.y > 0.7f && zScale < 0.8)
             {
-                zScale += 0.001f;
-            } else if(axis.y > 0.7f && zScale > 0.8)
+                zScale += 0.0015f;
+            } else if(axis.y > 0.7f && zScale > 0.8f)
             {
                 if (rate < 80) rate += 1;
                 else if (rate < 800) rate += 5;
@@ -82,6 +82,10 @@ public class SoulControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        zScale += 0.0005f;
+        if(zScale > 0.8f) {
+            rate += 1;
+        }
         if (!leftController.isValid /*|| !rightController.isValid*/)
         {
             GetDevice();
