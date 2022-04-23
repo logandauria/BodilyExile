@@ -65,7 +65,7 @@ class MarkovTest: MonoBehaviour {
         // sounds have been initialized.
 
         // TODO: @Logan Hook into Event system
-        startPhase1Part1();
+        // startPhase1Part1();
     }
 
 

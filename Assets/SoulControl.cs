@@ -17,6 +17,12 @@ public class SoulControl : MonoBehaviour
     // used to fetch available devices
     private List<InputDevice> devices = new List<InputDevice>();
 
+
+    public UnityEvent markov1;
+    public UnityEvent markov2;
+    public UnityEvent markov3;
+
+
     VisualEffect soul = new VisualEffect();
     public VisualEffect soulLines;
     public UnityEvent extractionComplete;
@@ -77,6 +83,7 @@ public class SoulControl : MonoBehaviour
     {
         soul = GetComponent<VisualEffect>();
         initScale = soul.GetFloat("zscale");
+        markov1.Invoke();
     }
 
     // Update is called once per frame
@@ -84,6 +91,7 @@ public class SoulControl : MonoBehaviour
     {
         zScale += 0.0005f;
         if(zScale > 0.8f) {
+
             rate += 1;
         }
         if (!leftController.isValid /*|| !rightController.isValid*/)

@@ -18,6 +18,10 @@ public class TimePhase : MonoBehaviour
     public UnityEvent midEvent;
     public UnityEvent nextPhase;
     public UnityEvent explode;
+    public UnityEvent markov1;
+    public UnityEvent markov2;
+    public UnityEvent markov3;
+    public UnityEvent markov4;
 
     // Start is called before the first frame update
     void Start()
