@@ -12,13 +12,13 @@ class MarkovTest: MonoBehaviour {
     // each needs its own `AudioSource`.
     // Rather than manually configuring each one to be mutually exclusive,
     // for now we'll just set n of them.
-    private const int TOTAL_SOURCE = 46;
+    private const int TOTAL_SOURCE = 48;
     private AudioSource[] audioSources = new AudioSource[TOTAL_SOURCE];
 
     // AudioClips from Bodily Exile (track1)
 
     public const int EXILE_NUM_GUITAR   = 8;
-    public const int EXILE_NUM_HARMONY  = 6;
+    public const int EXILE_NUM_HARMONY  = 8;
     public const int EXILE_NUM_LEAD     = 7;
     public const int EXILE_NUM_WHISPERS = 9;
 
@@ -65,7 +65,7 @@ class MarkovTest: MonoBehaviour {
         // sounds have been initialized.
 
         // TODO: @Logan Hook into Event system
-        // startPhase1Part1();
+        startPhase3();
     }
 
 
@@ -146,7 +146,10 @@ class MarkovTest: MonoBehaviour {
 
     public void startPhase3() {
         clearPhases();
-        // TODO
+        runningPhases.Add(StartCoroutine(PlayTrack(3, Track.ExileHarmony, 7)));
+        runningPhases.Add(StartCoroutine(PlayTrack(3, Track.ExileHarmony, 8)));
+        runningPhases.Add(StartCoroutine(PlayTrack(3, Track.BlueHarmony, 5)));
+        runningPhases.Add(StartCoroutine(PlayTrack(3, Track.BlueHarmony, 6)));
     }
 
     public void startPhase4() {
@@ -386,8 +389,11 @@ class Markov {
 
 
 
-        // Phase 3 - TODO
-        phase3prob = new double[,] {{ 1.0 }};
+        // Phase 3 - Just harmony
+        //                             1    2    3    4    5    6    7    8
+        phase3prob = new double[,] {{ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.9, 1.0 }, // exile-harmony
+                                    { 0.0, 0.0, 0.0, 0.0, 0.3, 0.1, 0.0, 0.0 }}; // blue-harmony
+
 
     }
 
@@ -458,7 +464,11 @@ class Markov {
                 default: break;
             }
         } else if (phase == 3) {
-            // TODO
+            switch (track) {
+                case Track.ExileHarmony: { return 0; break; }
+                case Track.BlueHarmony:  { return 1; break; }
+                default: break;
+            }
         }
         return 0;
     }
