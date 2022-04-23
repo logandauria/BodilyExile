@@ -32,24 +32,15 @@ public class LevelChanger : MonoBehaviour
         phases[currLevel-1].SetActive(false);
         currLevel += 1;
         phases[currLevel-1].SetActive(true);
-        // if phase 1 activate phase 1 objects, if not, deactivate them
-        if (currLevel == 1)
-        {
-            // activate phase 1 objs
-            foreach (GameObject g in phase1objs)
-            {
-                g.SetActive(true);
-            }
-        }
-        else
-        {
-            foreach (GameObject g in phase1objs)
-            {
-                g.SetActive(false);
-            }
-        }
+        //else
+        //{
+        //    foreach (GameObject g in phase1objs)
+        //    {
+        //        g.SetActive(false);
+        //    }
+        //}
         // if phase 2 activate phase 2 objects, if not, deactivate them
-        if (currLevel == 2)
+        if (currLevel == 3)
         {
             // activate phase 2 objs
             foreach(GameObject g in phase2objs)
@@ -64,7 +55,7 @@ public class LevelChanger : MonoBehaviour
             }
         }
         // if phase 3 activate phase 3 objects, if not, deactivate them
-        if (currLevel == 3)
+        if (currLevel == 4)
         {
             // activate phase 3 objs
             foreach (GameObject g in phase3objs)
@@ -80,7 +71,7 @@ public class LevelChanger : MonoBehaviour
             }
         }
         // if phase 4 activate phase 4 objects, if not, deactivate them
-        if (currLevel == 1)
+        if (currLevel == 5)
         {
             // activate phase 4 objs
             foreach (GameObject g in phase4objs)
@@ -95,7 +86,15 @@ public class LevelChanger : MonoBehaviour
                 g.SetActive(false);
             }
         }
-
+        // if phase 1 activate phase 1 objects, if not, deactivate them
+        if (currLevel == 2)
+        {
+            // activate phase 1 objs
+            foreach (GameObject g in phase1objs)
+            {
+                g.SetActive(true);
+            }
+        }
         //FadeToLevel();
         //SceneManager.LoadScene(sceneToLoad);
     }
