@@ -104,6 +104,12 @@ class MarkovTest: MonoBehaviour {
 
     public void startPhase1Part2() {
         clearPhases();
+        runningPhases.Add(StartCoroutine(PlayTrack(12, Track.BlueHarmony,  1)));
+        runningPhases.Add(StartCoroutine(PlayTrack(12, Track.ExileHarmony, 1)));
+        runningPhases.Add(StartCoroutine(PlayTrack(12, Track.ExileHarmony, 2)));
+        runningPhases.Add(StartCoroutine(PlayTrack(12, Track.ExileHarmony, 3)));
+        runningPhases.Add(StartCoroutine(PlayTrack(12, Track.ExileHarmony, 4)));
+        runningPhases.Add(StartCoroutine(PlayTrack(12, Track.ExileGuitar,  8)));
     }
 
     // Phase 2
@@ -275,6 +281,7 @@ enum Track: int {
 class Markov {
 
     static readonly double[,] phase0prob;
+    static readonly double[,] phase1part0prob;
     static readonly double[,] phase1part1prob;
     static readonly double[,] phase1part2prob;
     static readonly double[,] phase2prob;
@@ -298,58 +305,47 @@ class Markov {
         // Phase 1 - (two vocals + guitar)
         //           Two vocals interact w.h.p, guitar is constant
         //           (flattened down)
-        //
-        //  {              sample1 sample2 sample3
-        //   blue-harmony  { 0.5     0.0    0.0    }
-        //   exile-lead    { 0.9     0.0    0.0    }
-        //   exile-harmony { 0.9     0.0    0.0    }
-        //   exile-whisper { 0.9     0.0    0.0    }
-        //   exile-guitar  { 1.0     0.0    0.0    }
-        //  }
-        //
-        //
+
         // This needs to be this long as the sample is an absolute index,
         // and writing code to convert this index would bring
         // the total number of index-conversion functions up to 3,
         // which is too damn high.
+        //
         //                                  1    2    3    4    5    6    7    8
-        phase1part1prob = new double[,] {{ 0.3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  }, // blue-harmony
+        phase1part0prob = new double[,] {{ 0.3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  }, // blue-harmony
                                          { 0.9, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  }, // exile-lead
                                          { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, }, // exile-harmony
                                          { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, }, // exile-whisper
                                          { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0 }}; // exile-guitar
 
         //                                  1    2    3    4    5    6    7    8
-        phase1part2prob = new double[,] {{ 0.3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  }, // blue-harmony
+        phase1part1prob = new double[,] {{ 0.3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  }, // blue-harmony
                                          { 0.9, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  }, // exile-lead
                                          { 0.1, 0.3, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, }, // exile-harmony
                                          { 0.0, 0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, }, // exile-whisper
                                          { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0 }}; // exile-guitar
 
+        //                                  1    2    3    4    5    6    7    8
+        phase1part2prob = new double[,] {{ 0.3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  }, // blue-harmony
+                                         { 0.9, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  }, // exile-lead
+                                         { 0.7, 0.3, 0.4, 0.3, 0.4, 0.5, 0.0, 0.0, }, // exile-harmony
+                                         { 0.0, 0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, }, // exile-whisper
+                                         { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }}; // exile-guitar
+
 
         // Phase 2 - (two vocals + guitar + other vocals )
         //           Two vocals interact w.h.p, guitar is constant
         //
-        //  {                  sample1 sample2 sample3
-        //   track1-lead     {   0.5     0.6    0.4    }
-        //   track2-harmony  {   0.5     0.4    0.1    }
-        //   guitar          {   0.8     0.2    0.0    }
-        //   track2-harmony  {   0.5     0.4    0.1    }
-        //   track2-harmony  {   0.5     0.4    0.1    }
-        //   track2-harmony  {   0.5     0.4    0.1    }
-        //   track2-harmony  {   0.5     0.4    0.1    }
-        //  }
-        //
-        //
-        phase2prob = new double[,] {{ 0.5, 0.6, 0.4 },
-                                    { 0.5, 0.4, 0.1 },
-                                    { 0.8, 0.2, 0.0 }};
+        //                             1    2    3    4    5    6    7    8
+        phase2prob = new double[,] {{ 0.5, 0.6, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0},  // blue-lead
+                                    { 0.5, 0.4, 0.1, 0.3, 0.5, 0.3, 0.0, 0.0},  // exile-harmony
+                                    { 0.8, 0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}}; // guitar
 
         // Phase 3 - (two vocals + guitar + other vocals )
         //           Two vocals interact w.h.p, guitar is constant
         //
         //  {                  sample1 sample2 sample3
-        //   track1-lead     {   0.5     0.6    0.4    }
+        //   exile-lead      {   0.5     0.6    0.4    }
         //   track2-harmony  {   0.5     0.4    0.1    }
         //   guitar          {   0.8     0.2    0.0    }
         //   track2-harmony  {   0.5     0.4    0.1    }
@@ -400,12 +396,13 @@ class Markov {
 
         // Pick prob array to use
         switch (phase) {
-            case 0:  curProbArr = phase0prob; break;
-            case 10: curProbArr = phase1part1prob; break;
-            case 11: curProbArr = phase1part2prob; break;
-            case 2:  curProbArr = phase2prob; break;
-            case 3:  curProbArr = phase3prob; break;
-            case 4:  curProbArr = phase4prob; break;
+            case 0:  curProbArr = phase0prob;      break;
+            case 10: curProbArr = phase1part0prob; break;
+            case 11: curProbArr = phase1part1prob; break;
+            case 12: curProbArr = phase1part2prob; break;
+            case 2:  curProbArr = phase2prob;      break;
+            case 3:  curProbArr = phase3prob;      break;
+            case 4:  curProbArr = phase4prob;      break;
             default: break;
         }
 
@@ -419,7 +416,7 @@ class Markov {
     /// A little hacky -- maps track indices to the probability matrices defined
     /// manually in the constructor.
     private static int mapTrackToIndex(Track track, int phase) {
-        if (phase == 10 || phase == 11) {
+        if (phase == 10 || phase == 11 || phase == 12) {
             switch (track) {
                 case Track.BlueHarmony:  { return 0; break; }
                 case Track.ExileLead:    { return 1; break; }
