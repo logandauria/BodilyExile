@@ -116,9 +116,35 @@ class MarkovTest: MonoBehaviour {
 
     public void startPhase2Part0() {
         clearPhases();
-        // TODO
+        runningPhases.Add(StartCoroutine(PlayTrack(20, Track.ExileLead,    1)));
+        runningPhases.Add(StartCoroutine(PlayTrack(20, Track.ExileLead,    2)));
+        runningPhases.Add(StartCoroutine(PlayTrack(20, Track.BlueHarmony,  1)));
+        runningPhases.Add(StartCoroutine(PlayTrack(20, Track.BlueHarmony,  2)));
+        runningPhases.Add(StartCoroutine(PlayTrack(20, Track.BlueHarmony,  3)));
+        runningPhases.Add(StartCoroutine(PlayTrack(20, Track.BlueHarmony,  4)));
+        runningPhases.Add(StartCoroutine(PlayTrack(20, Track.BlueGuitar,   6)));
     }
-    public void startPhase3Part0() {
+
+    public void startPhase2Part1() {
+        clearPhases();
+        runningPhases.Add(StartCoroutine(PlayTrack(21, Track.BlueHarmony,  1)));
+        runningPhases.Add(StartCoroutine(PlayTrack(21, Track.BlueHarmony,  2)));
+        runningPhases.Add(StartCoroutine(PlayTrack(21, Track.BlueHarmony,  3)));
+        runningPhases.Add(StartCoroutine(PlayTrack(21, Track.BlueHarmony,  4)));
+        runningPhases.Add(StartCoroutine(PlayTrack(21, Track.BlueHarmony,  5)));
+        runningPhases.Add(StartCoroutine(PlayTrack(21, Track.BlueHarmony,  6)));
+    }
+
+    public void startPhase2Part2() {
+        clearPhases();
+        runningPhases.Add(StartCoroutine(PlayTrack(22, Track.ExileWhisper, 1)));
+        runningPhases.Add(StartCoroutine(PlayTrack(22, Track.ExileWhisper, 2)));
+        runningPhases.Add(StartCoroutine(PlayTrack(22, Track.ExileWhisper, 3)));
+    }
+
+    // Phase 3
+
+    public void startPhase3() {
         clearPhases();
         // TODO
     }
@@ -126,6 +152,7 @@ class MarkovTest: MonoBehaviour {
     public void startPhase4() {
         clearPhases();
         // TODO: Cute piano cover of Bodily Exile
+        // Not doing :( no time
     }
 
 
@@ -284,7 +311,9 @@ class Markov {
     static readonly double[,] phase1part0prob;
     static readonly double[,] phase1part1prob;
     static readonly double[,] phase1part2prob;
-    static readonly double[,] phase2prob;
+    static readonly double[,] phase2part0prob;
+    static readonly double[,] phase2part1prob;
+    static readonly double[,] phase2part2prob;
     static readonly double[,] phase3prob;
     static readonly double[,] phase4prob;
 
@@ -336,38 +365,29 @@ class Markov {
         // Phase 2 - (two vocals + guitar + other vocals )
         //           Two vocals interact w.h.p, guitar is constant
         //
-        //                             1    2    3    4    5    6    7    8
-        phase2prob = new double[,] {{ 0.5, 0.6, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0},  // blue-lead
-                                    { 0.5, 0.4, 0.1, 0.3, 0.5, 0.3, 0.0, 0.0},  // exile-harmony
-                                    { 0.8, 0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}}; // guitar
+        //                                  1    2    3    4    5    6    7    8
+        phase2part0prob = new double[,] {{ 0.2, 0.1, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0},  // exile-lead
+                                         { 0.5, 0.4, 0.1, 0.3, 0.5, 0.3, 0.0, 0.0},  // blue-harmony (same as 1x)
+                                         { 0.5, 0.4, 0.1, 0.3, 0.5, 0.3, 0.0, 0.0},  // exile-whisper
+                                         { 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0}}; // blue-guitar
 
-        // Phase 3 - (two vocals + guitar + other vocals )
-        //           Two vocals interact w.h.p, guitar is constant
-        //
-        //  {                  sample1 sample2 sample3
-        //   exile-lead      {   0.5     0.6    0.4    }
-        //   track2-harmony  {   0.5     0.4    0.1    }
-        //   guitar          {   0.8     0.2    0.0    }
-        //   track2-harmony  {   0.5     0.4    0.1    }
-        //   track2-harmony  {   0.5     0.4    0.1    }
-        //   track2-harmony  {   0.5     0.4    0.1    }
-        //   track2-harmony  {   0.5     0.4    0.1    }
-        //  }
-        //
-        //
-        phase2prob = new double[,] {{ 0.5, 0.6, 0.4 },
-                                    { 0.5, 0.4, 0.1 },
-                                    { 0.8, 0.2, 0.0 }};
+        //                                  1    2    3    4    5    6    7    8
+        phase2part1prob = new double[,] {{ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  // exile-lead
+                                         { 1.0, 0.8, 0.6, 0.8, 0.5, 0.7, 0.0, 0.0},  // blue-harmony (only harmony)
+                                         { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  // exile-whisper
+                                         { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}}; // blue-guitar
 
-        // Phase 4 - (credits)
-        //           Just a cute piano cover of Bodily Exile.
-        //
-        //  {                  sample1
-        //   piano-cover     {   1.0   }
-        //  }
-        //
-        //
-        phase2prob = new double[,] {{ 1.0 }};
+        //                                  1    2    3    4    5    6    7    8
+        phase2part2prob = new double[,] {{ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  // exile-lead
+                                         { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  // blue-harmony
+                                         { 1.0, 0.9, 0.9, 0.0, 0.0, 0.0, 0.0, 0.0},  // exile-whisper (only this)
+                                         { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}}; // blue-guitar
+
+
+
+
+        // Phase 3 - TODO
+        phase3prob = new double[,] {{ 1.0 }};
 
     }
 
@@ -390,19 +410,23 @@ class Markov {
             return false;
         }
 
-        Debug.Log("[Markov] phase " + phase + ", track " + track + ", sample " + sample);
+        // Debug.Log("[Markov] phase " + phase + ", track " + track + ", sample " + sample);
         double curProb = 0.0;
         double[,] curProbArr = phase0prob;
 
         // Pick prob array to use
         switch (phase) {
-            case 0:  curProbArr = phase0prob;      break;
-            case 10: curProbArr = phase1part0prob; break;
-            case 11: curProbArr = phase1part1prob; break;
-            case 12: curProbArr = phase1part2prob; break;
-            case 2:  curProbArr = phase2prob;      break;
-            case 3:  curProbArr = phase3prob;      break;
-            case 4:  curProbArr = phase4prob;      break;
+            // [phase][index], so, 11 is phase1part1
+            // Index not defined for single-part phases
+            case 0:  curProbArr  = phase0prob;      break;
+            case 10: curProbArr  = phase1part0prob; break;
+            case 11: curProbArr  = phase1part1prob; break;
+            case 12: curProbArr  = phase1part2prob; break;
+            case 20: curProbArr  = phase2part0prob; break;
+            case 21: curProbArr  = phase2part1prob; break;
+            case 22: curProbArr  = phase2part2prob; break;
+            case 3:  curProbArr  = phase3prob;      break;
+            case 4:  curProbArr  = phase4prob;      break;
             default: break;
         }
 
@@ -425,7 +449,15 @@ class Markov {
                 case Track.ExileGuitar:  { return 4; break; }
                 default: break;
             }
-        } else if (phase == 2) {
+        } else if (phase == 20 || phase == 21 || phase == 22) {
+            switch (track) {
+                case Track.ExileLead:    { return 0; break; }
+                case Track.BlueHarmony:  { return 1; break; }
+                case Track.ExileWhisper: { return 2; break; }
+                case Track.BlueGuitar:   { return 3; break; }
+                default: break;
+            }
+        } else if (phase == 3) {
             // TODO
         }
         return 0;
