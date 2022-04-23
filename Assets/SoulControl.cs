@@ -33,6 +33,7 @@ public class SoulControl : MonoBehaviour
 
     private bool triggerOnce = false;
     private bool triggerOnce2 = false;
+    private bool triggerOnce3 = false;
 
     public float timer = 0;
 
@@ -91,7 +92,11 @@ public class SoulControl : MonoBehaviour
     {
         zScale += 0.0005f;
         if(zScale > 0.8f) {
-
+            if (!triggerOnce3)
+            {
+                markov2.Invoke();
+                triggerOnce3 = true;
+            }
             rate += 1;
         }
         if (!leftController.isValid /*|| !rightController.isValid*/)
@@ -104,6 +109,7 @@ public class SoulControl : MonoBehaviour
         Debug.Log("rate: " + rate);
         if(rate > 50000 && !triggerOnce)
         {
+            markov3.Invoke();
             extractionComplete.Invoke();
             triggerOnce = true;
             Debug.Log("rate exceeded");

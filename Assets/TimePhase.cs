@@ -26,7 +26,7 @@ public class TimePhase : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        markov1.Invoke();
     }
 
     // Update is called once per frame
@@ -35,16 +35,19 @@ public class TimePhase : MonoBehaviour
         timer += Time.deltaTime;
         if(timer > midTimeLimit && !triggerMidOnce)
         {
+            markov2.Invoke();
             triggerMidOnce = true;
             midEvent.Invoke();
         }
         if(timer > timeLimit && !triggerOnce)
         {
+            markov4.Invoke();
             triggerOnce = true;
             nextPhase.Invoke();
         }
         if(timer > explodeTimeLimit && !triggerExpOnce)
         {
+            markov3.Invoke();
             triggerExpOnce = true;
             explode.Invoke();
         }
