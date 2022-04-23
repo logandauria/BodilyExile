@@ -12,7 +12,7 @@ class MarkovTest: MonoBehaviour {
     // each needs its own `AudioSource`.
     // Rather than manually configuring each one to be mutually exclusive,
     // for now we'll just set n of them.
-    private const int TOTAL_SOURCE = 48;
+    private const int TOTAL_SOURCE = 49;
     private AudioSource[] audioSources = new AudioSource[TOTAL_SOURCE];
 
     // AudioClips from Bodily Exile (track1)
@@ -40,6 +40,7 @@ class MarkovTest: MonoBehaviour {
     public AudioClip[] blueGuitarClips    = new AudioClip[BLUE_NUM_GUITAR];
     public AudioClip[] blueHarmonyClips   = new AudioClip[BLUE_NUM_HARMONY];
     public AudioClip[] blueLeadClips      = new AudioClip[BLUE_NUM_LEAD];
+    public AudioClip[] credits            = new AudioClip[1];
 
 
     private bool running = false;
@@ -64,8 +65,8 @@ class MarkovTest: MonoBehaviour {
         // so timers should be triggered to start *after* all
         // sounds have been initialized.
 
-        // TODO: @Logan Hook into Event system
-        startPhase3();
+        // TODO: @Logan Hook into Event system (done!)
+        // startPhase4();
     }
 
 
@@ -155,7 +156,8 @@ class MarkovTest: MonoBehaviour {
     public void startPhase4() {
         clearPhases();
         // TODO: Cute piano cover of Bodily Exile
-        // Not doing :( no time
+        // WE MADE TIME
+        runningPhases.Add(StartCoroutine(PlayTrack(4, Track.Credits, 1)));
     }
 
 
@@ -211,6 +213,12 @@ class MarkovTest: MonoBehaviour {
                     case Track.BlueLead: {
                         Debug.Log("[Markov] Playing BlueLead!");
                         curSource = audioSources[EXILE_OFFSET + BLUE_NUM_GUITAR + BLUE_NUM_HARMONY + sample];
+                        curSource.Play();
+                        break;
+                    }
+                    case Track.Credits: {
+                        Debug.Log("[Markov] Playing Credits!");
+                        curSource = audioSources[EXILE_OFFSET + BLUE_NUM_GUITAR + BLUE_NUM_HARMONY + + BLUE_NUM_LEAD + sample];
                         curSource.Play();
                         break;
                     }
@@ -290,6 +298,9 @@ class MarkovTest: MonoBehaviour {
             audioSources[offset + i].clip = blueLeadClips[i];
         }
 
+        credits[0] = Resources.Load<AudioClip>("AudioStems/Exile/credits");
+        audioSources[TOTAL_SOURCE - 1].clip = credits[0];
+
     }
 }
 
@@ -302,9 +313,9 @@ enum Track: int {
 
     BlueGuitar   = 4,
     BlueHarmony  = 5,
-    BlueLead     = 6
+    BlueLead     = 6,
 
-    // TODO: Add piano cover track
+    Credits      = 7
 }
 
 
@@ -395,6 +406,9 @@ class Markov {
                                     { 0.0, 0.0, 0.0, 0.0, 0.3, 0.1, 0.0, 0.0 }}; // blue-harmony
 
 
+        phase4prob = new double[,] {{ 1.0 }}; // credits
+
+
     }
 
     /// Determines if a given track+sample should be played
@@ -468,6 +482,10 @@ class Markov {
                 case Track.ExileHarmony: { return 0; break; }
                 case Track.BlueHarmony:  { return 1; break; }
                 default: break;
+            }
+        } else if (phase == 4) {
+            switch (track) {
+                case Track.Credits: { return 0; break; }
             }
         }
         return 0;
