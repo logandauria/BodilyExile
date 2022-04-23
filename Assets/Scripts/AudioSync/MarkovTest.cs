@@ -355,21 +355,21 @@ class Markov {
         // which is too damn high.
         //
         //                                  1    2    3    4    5    6    7    8
-        phase1part0prob = new double[,] {{ 0.3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  }, // blue-harmony
+        phase1part0prob = new double[,] {{ 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  }, // blue-harmony
                                          { 0.9, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  }, // exile-lead
                                          { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, }, // exile-harmony
                                          { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, }, // exile-whisper
                                          { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0 }}; // exile-guitar
 
         //                                  1    2    3    4    5    6    7    8
-        phase1part1prob = new double[,] {{ 0.3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  }, // blue-harmony
+        phase1part1prob = new double[,] {{ 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  }, // blue-harmony
                                          { 0.9, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  }, // exile-lead
                                          { 0.1, 0.3, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, }, // exile-harmony
                                          { 0.0, 0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, }, // exile-whisper
                                          { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0 }}; // exile-guitar
 
         //                                  1    2    3    4    5    6    7    8
-        phase1part2prob = new double[,] {{ 0.3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  }, // blue-harmony
+        phase1part2prob = new double[,] {{ 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  }, // blue-harmony
                                          { 0.9, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  }, // exile-lead
                                          { 0.3, 0.3, 0.4, 0.3, 0.4, 0.5, 0.0, 0.0, }, // exile-harmony
                                          { 0.0, 0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, }, // exile-whisper
@@ -381,13 +381,13 @@ class Markov {
         //
         //                                  1    2    3    4    5    6    7    8
         phase2part0prob = new double[,] {{ 0.2, 0.1, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0},  // exile-lead
-                                         { 0.5, 0.4, 0.1, 0.3, 0.5, 0.3, 0.0, 0.0},  // blue-harmony (same as 1x)
+                                         { 0.4, 0.4, 0.1, 0.3, 0.5, 0.3, 0.0, 0.0},  // blue-harmony (same as 1x)
                                          { 0.5, 0.4, 0.1, 0.3, 0.5, 0.3, 0.0, 0.0},  // exile-whisper
                                          { 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0}}; // blue-guitar
 
         //                                  1    2    3    4    5    6    7    8
         phase2part1prob = new double[,] {{ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  // exile-lead
-                                         { 1.0, 0.8, 0.6, 0.8, 0.5, 0.7, 0.0, 0.0},  // blue-harmony (only harmony)
+                                         { 0.9, 1.0, 0.6, 0.8, 0.5, 0.7, 0.0, 0.0},  // blue-harmony (only harmony)
                                          { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  // exile-whisper
                                          { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}}; // blue-guitar
 
