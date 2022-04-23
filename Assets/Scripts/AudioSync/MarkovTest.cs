@@ -12,14 +12,14 @@ class MarkovTest: MonoBehaviour {
     // each needs its own `AudioSource`.
     // Rather than manually configuring each one to be mutually exclusive,
     // for now we'll just set n of them.
-    private const int TOTAL_SOURCE = 45;
+    private const int TOTAL_SOURCE = 46;
     private AudioSource[] audioSources = new AudioSource[TOTAL_SOURCE];
 
     // AudioClips from Bodily Exile (track1)
 
     public const int EXILE_NUM_GUITAR   = 8;
     public const int EXILE_NUM_HARMONY  = 6;
-    public const int EXILE_NUM_LEAD     = 6;
+    public const int EXILE_NUM_LEAD     = 7;
     public const int EXILE_NUM_WHISPERS = 9;
 
     public const int EXILE_OFFSET = EXILE_NUM_GUITAR + EXILE_NUM_HARMONY + EXILE_NUM_LEAD + EXILE_NUM_WHISPERS;
@@ -65,7 +65,7 @@ class MarkovTest: MonoBehaviour {
         // sounds have been initialized.
 
         // TODO: @Logan Hook into Event system
-        setupPhase1();
+        startPhase1Part0();
     }
 
 
@@ -76,32 +76,45 @@ class MarkovTest: MonoBehaviour {
         }
     }
 
-    // MARK: Phase Hooks. **Must** call clearPhase() at start of each phase to prevent overlap.
+    // MARK: Public phase hooks. **Must** call clearPhase() at start of each phase to prevent overlap.
 
-    public void setupPhase0() {
+    public void startPhase0() {
         clearPhases();
     }
 
-    public void setupPhase1() {
+    // Phase 1
+
+    public void startPhase1Part0() {
         clearPhases();
-        runningPhases.Add(StartCoroutine(PlayTrack(1, Track.ExileHarmony, 1)));
-        runningPhases.Add(StartCoroutine(PlayTrack(1, Track.BlueLead, 1)));
+        runningPhases.Add(StartCoroutine(PlayTrack(1, Track.BlueHarmony, 1)));
+        runningPhases.Add(StartCoroutine(PlayTrack(1, Track.ExileLead, 7)));
         runningPhases.Add(StartCoroutine(PlayTrack(1, Track.ExileGuitar, 8)));
     }
 
-    public void setupPhase2() {
+    public void startPhase1Part1() {
+        clearPhases();
+    }
+
+    public void startPhase1Part2() {
+        clearPhases();
+    }
+
+    // Phase 2
+
+    public void startPhase2Part0() {
         clearPhases();
         // TODO
     }
-    public void setupPhase3() {
+    public void startPhase3Part0() {
         clearPhases();
         // TODO
     }
 
-    public void setupPhase4() {
+    public void startPhase4() {
         clearPhases();
         // TODO: Cute piano cover of Bodily Exile
     }
+
 
     private IEnumerator PlayTrack(int phase, Track track, int sample) {
 
@@ -143,6 +156,12 @@ class MarkovTest: MonoBehaviour {
                     case Track.BlueGuitar: {
                         Debug.Log("[Markov] Playing BlueGuitar!");
                         curSource = audioSources[EXILE_OFFSET + sample];
+                        curSource.Play();
+                        break;
+                    }
+                    case Track.BlueHarmony: {
+                        Debug.Log("[Markov] Playing BlueHarmony!");
+                        curSource = audioSources[EXILE_OFFSET + BLUE_NUM_GUITAR + sample];
                         curSource.Play();
                         break;
                     }
@@ -272,14 +291,14 @@ class Markov {
         //           Two vocals interact w.h.p, guitar is constant
         //
         //  {                sample1 sample2 sample3
-        //   exile-harmony {   0.5     0.6    0.4    }
-        //   blue-lead     {   0.5     0.4    0.1    }
-        //   exile-guitar  {   0.8     0.0    0.0    }
+        //   blue-harmony  {   0.5     0.0    0.0    }
+        //   exile-lead    {   0.9     0.0    0.0    }
+        //   exile-guitar  {   1.0     0.0    0.0    }
         //  }
         //
         //
-        phase1prob = new double[,] {{ 0.5, 0.6, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0 },
-                                    { 0.5, 0.4, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0 },
+        phase1prob = new double[,] {{ 0.3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
+                                    { 0.9, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
                                     { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0}};
 
 
@@ -376,9 +395,9 @@ class Markov {
     private static int mapTrackToIndex(Track track, int phase) {
         if (phase == 1) {
             switch (track) {
-                case Track.ExileHarmony: { return 0; break; }
-                case Track.BlueLead:     { return 1; break; }
-                case Track.ExileGuitar:  { return 2; break; }
+                case Track.BlueHarmony: { return 0; break; }
+                case Track.ExileLead:   { return 1; break; }
+                case Track.ExileGuitar: { return 2; break; }
                 default: break;
             }
         } else if (phase == 2) {
