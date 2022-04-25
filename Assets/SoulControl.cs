@@ -90,14 +90,14 @@ public class SoulControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        zScale += 0.0005f;
+        zScale += 0.001f;
         if(zScale > 0.8f) {
             if (!triggerOnce3)
             {
                 markov2.Invoke();
                 triggerOnce3 = true;
             }
-            rate += 1;
+            rate += 100;
         }
         if (!leftController.isValid /*|| !rightController.isValid*/)
         {

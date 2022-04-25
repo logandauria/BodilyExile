@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 262.36157, g: 325.07837, b: 430.26367, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -436,49 +436,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   markov1:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1235881054}
-        m_TargetAssemblyTypeName: MarkovTest, Assembly-CSharp
-        m_MethodName: startPhase1Part0
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   markov2:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1235881054}
-        m_TargetAssemblyTypeName: MarkovTest, Assembly-CSharp
-        m_MethodName: startPhase1Part1
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   markov3:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1235881054}
-        m_TargetAssemblyTypeName: MarkovTest, Assembly-CSharp
-        m_MethodName: startPhase1Part2
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   soulLines: {fileID: 300007800}
   extractionComplete:
     m_PersistentCalls:
@@ -713,9 +677,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timer: 0
-  timeLimit: 60
-  midTimeLimit: 30
-  explodeTimeLimit: 50
+  timeLimit: 120
+  midTimeLimit: 60
+  explodeTimeLimit: 110
   midEvent:
     m_PersistentCalls:
       m_Calls:
@@ -763,64 +727,16 @@ MonoBehaviour:
         m_CallState: 2
   markov1:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1235881054}
-        m_TargetAssemblyTypeName: MarkovTest, Assembly-CSharp
-        m_MethodName: startPhase2Part0
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   markov2:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1235881054}
-        m_TargetAssemblyTypeName: MarkovTest, Assembly-CSharp
-        m_MethodName: startPhase2Part1
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   markov3:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1235881054}
-        m_TargetAssemblyTypeName: MarkovTest, Assembly-CSharp
-        m_MethodName: startPhase2Part2
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   markov4:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1235881054}
-        m_TargetAssemblyTypeName: MarkovTest, Assembly-CSharp
-        m_MethodName: startPhase3
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &135046893 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4765101505554604656, guid: 43d7c73d8eb90d44bbddf1bd61006e35, type: 3}
@@ -2191,7 +2107,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 339926820}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.15493476, y: 0.91678333, z: 0.51397896}
+  m_LocalPosition: {x: 0.15493476, y: 0.91678333, z: 0.222}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3891,7 +3807,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1235881054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4129,7 +4045,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67499ae7635838942af1ab5004d9c1a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  phase0Time: 5
+  phase0Time: 10
   nextPhase:
     m_PersistentCalls:
       m_Calls:
@@ -4432,7 +4348,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1412575489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6807,7 +6723,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5540624908843769470}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.11293471, y: 0.572, z: 0.4779787}
+  m_LocalPosition: {x: 0.11293471, y: 0.572, z: -0.381}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
