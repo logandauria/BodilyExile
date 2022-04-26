@@ -2,6 +2,7 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(AudioSource))]
 class MarkovTest: MonoBehaviour {
@@ -11,31 +12,46 @@ class MarkovTest: MonoBehaviour {
     // each needs its own `AudioSource`.
     // Rather than manually configuring each one to be mutually exclusive,
     // for now we'll just set n of them.
-    private AudioSource[] audioSources = new AudioSource[28];
+    private const int TOTAL_SOURCE = 49;
+    private AudioSource[] audioSources = new AudioSource[TOTAL_SOURCE];
 
     // AudioClips from Bodily Exile (track1)
 
-    public const int NUM_GUITAR   = 7;
-    public const int NUM_HARMONY  = 6;
-    public const int NUM_LEAD     = 6;
-    public const int NUM_WHISPERS = 9;
+    public const int EXILE_NUM_GUITAR   = 8;
+    public const int EXILE_NUM_HARMONY  = 8;
+    public const int EXILE_NUM_LEAD     = 7;
+    public const int EXILE_NUM_WHISPERS = 9;
+
+    public const int EXILE_OFFSET = EXILE_NUM_GUITAR + EXILE_NUM_HARMONY + EXILE_NUM_LEAD + EXILE_NUM_WHISPERS;
 
     public AudioClip[,] exileClips;
-    public AudioClip[] exileGuitarClips    = new AudioClip[NUM_GUITAR];
-    public AudioClip[] exileHarmonyClips   = new AudioClip[NUM_HARMONY];
-    public AudioClip[] exileLeadClips      = new AudioClip[NUM_LEAD];
-    public AudioClip[] exileWhispersClips  = new AudioClip[NUM_WHISPERS];
+    public AudioClip[] exileGuitarClips    = new AudioClip[EXILE_NUM_GUITAR];
+    public AudioClip[] exileHarmonyClips   = new AudioClip[EXILE_NUM_HARMONY];
+    public AudioClip[] exileLeadClips      = new AudioClip[EXILE_NUM_LEAD];
+    public AudioClip[] exileWhispersClips  = new AudioClip[EXILE_NUM_WHISPERS];
 
-    // TODO: Samples from the other track
+    // AudioClips from Milky Blue (track2)
+
+    public const int BLUE_NUM_GUITAR   = 6;
+    public const int BLUE_NUM_HARMONY  = 6;
+    public const int BLUE_NUM_LEAD     = 4;
+
+    public AudioClip[,] blueClips;
+    public AudioClip[] blueGuitarClips    = new AudioClip[BLUE_NUM_GUITAR];
+    public AudioClip[] blueHarmonyClips   = new AudioClip[BLUE_NUM_HARMONY];
+    public AudioClip[] blueLeadClips      = new AudioClip[BLUE_NUM_LEAD];
+    public AudioClip[] credits            = new AudioClip[1];
+
 
     private bool running = false;
+    private List<Coroutine> runningPhases = new List<Coroutine>();
 
     void Start() {
 
         GameObject child = new GameObject("Player");
         child.transform.parent = gameObject.transform;
 
-        for (int i = 0; i < 28; i++) {
+        for (int i = 0; i < TOTAL_SOURCE; i++) {
             audioSources[i] = child.AddComponent<AudioSource>();
         }
 
@@ -43,55 +59,180 @@ class MarkovTest: MonoBehaviour {
         loadAudioClips();
         running = true;
 
-
-
-        // exileClips = new AudioClip[,];
-        // (Array sourceArray, int sourceIndex, Array destinationArray, int destinationIndex, int length);
-        // Array.Copy(exileGuitarClips)
-
-        // damn
-
-
-
-        // TODO: Make into array of coroutines or something
-
-        // Play track0 on a simulated loop,
-        // re-triggering after each interval.
         //
         // Note that the system needs around a ~1s buffer to
         // load the file into memory (src: https://bit.ly/35EWiI4),
         // so timers should be triggered to start *after* all
         // sounds have been initialized.
-        setupPhase0();
+
+        // TODO: @Logan Hook into Event system (done!)
+        // startPhase4();
     }
 
-    private void setupPhase0() {
 
-        // Phase 0 is defined to play two vocal tracks
-        StartCoroutine(PlayTrack(0, Track.ExileLead, 0));
-        StartCoroutine(PlayTrack(0, Track.ExileHarmony, 0));
-
+    /// Stop any running phases (coroutines)
+    private void clearPhases() {
+        foreach (Coroutine coroutine in runningPhases) {
+            StopCoroutine(coroutine);
+        }
     }
 
-    private void setupPhase1() {
+    // MARK: Public phase hooks. **Must** call clearPhase() at start of each phase to prevent overlap.
 
-        // StopCoroutine(PlayTrack(Track.ExileLead, 0));
-        // StopCoroutine(PlayTrack(Track.ExileHarmony, 0));
+    public void startPhase0() {
+        clearPhases();
+    }
 
-        StartCoroutine(PlayTrack(1, Track.ExileLead, 0));
+    // Phase 1
+
+    public void startPhase1Part0() {
+        clearPhases();
+        runningPhases.Add(StartCoroutine(PlayTrack(10, Track.BlueHarmony, 1)));
+        runningPhases.Add(StartCoroutine(PlayTrack(10, Track.ExileLead, 7)));
+        runningPhases.Add(StartCoroutine(PlayTrack(10, Track.ExileGuitar, 8)));
+    }
+
+    public void startPhase1Part1() {
+        clearPhases();
+        runningPhases.Add(StartCoroutine(PlayTrack(11, Track.BlueHarmony,  1)));
+        runningPhases.Add(StartCoroutine(PlayTrack(11, Track.ExileLead,    7)));
+        runningPhases.Add(StartCoroutine(PlayTrack(11, Track.ExileHarmony, 1)));
+        runningPhases.Add(StartCoroutine(PlayTrack(11, Track.ExileHarmony, 2)));
+        runningPhases.Add(StartCoroutine(PlayTrack(11, Track.ExileHarmony, 3)));
+        runningPhases.Add(StartCoroutine(PlayTrack(11, Track.ExileWhisper, 2)));
+        runningPhases.Add(StartCoroutine(PlayTrack(11, Track.ExileGuitar,  8)));
+    }
+
+    public void startPhase1Part2() {
+        clearPhases();
+        runningPhases.Add(StartCoroutine(PlayTrack(12, Track.BlueHarmony,  1)));
+        runningPhases.Add(StartCoroutine(PlayTrack(12, Track.ExileHarmony, 1)));
+        runningPhases.Add(StartCoroutine(PlayTrack(12, Track.ExileHarmony, 2)));
+        runningPhases.Add(StartCoroutine(PlayTrack(12, Track.ExileHarmony, 3)));
+        runningPhases.Add(StartCoroutine(PlayTrack(12, Track.ExileHarmony, 4)));
+        runningPhases.Add(StartCoroutine(PlayTrack(12, Track.ExileGuitar,  8)));
+    }
+
+    // Phase 2
+
+    public void startPhase2Part0() {
+        clearPhases();
+        runningPhases.Add(StartCoroutine(PlayTrack(20, Track.ExileLead,    1)));
+        runningPhases.Add(StartCoroutine(PlayTrack(20, Track.ExileLead,    2)));
+        runningPhases.Add(StartCoroutine(PlayTrack(20, Track.BlueHarmony,  1)));
+        runningPhases.Add(StartCoroutine(PlayTrack(20, Track.BlueHarmony,  2)));
+        runningPhases.Add(StartCoroutine(PlayTrack(20, Track.BlueHarmony,  3)));
+        runningPhases.Add(StartCoroutine(PlayTrack(20, Track.BlueHarmony,  4)));
+        runningPhases.Add(StartCoroutine(PlayTrack(20, Track.BlueGuitar,   6)));
+    }
+
+    public void startPhase2Part1() {
+        clearPhases();
+        runningPhases.Add(StartCoroutine(PlayTrack(21, Track.BlueHarmony,  1)));
+        runningPhases.Add(StartCoroutine(PlayTrack(21, Track.BlueHarmony,  2)));
+        runningPhases.Add(StartCoroutine(PlayTrack(21, Track.BlueHarmony,  3)));
+        runningPhases.Add(StartCoroutine(PlayTrack(21, Track.BlueHarmony,  4)));
+        runningPhases.Add(StartCoroutine(PlayTrack(21, Track.BlueHarmony,  5)));
+        runningPhases.Add(StartCoroutine(PlayTrack(21, Track.BlueHarmony,  6)));
+    }
+
+    public void startPhase2Part2() {
+        clearPhases();
+        runningPhases.Add(StartCoroutine(PlayTrack(22, Track.ExileWhisper, 1)));
+        runningPhases.Add(StartCoroutine(PlayTrack(22, Track.ExileWhisper, 2)));
+        runningPhases.Add(StartCoroutine(PlayTrack(22, Track.ExileWhisper, 3)));
+    }
+
+    // Phase 3
+
+    public void startPhase3() {
+        clearPhases();
+        runningPhases.Add(StartCoroutine(PlayTrack(3, Track.ExileHarmony, 7)));
+        runningPhases.Add(StartCoroutine(PlayTrack(3, Track.ExileHarmony, 8)));
+        runningPhases.Add(StartCoroutine(PlayTrack(3, Track.BlueHarmony, 5)));
+        runningPhases.Add(StartCoroutine(PlayTrack(3, Track.BlueHarmony, 6)));
+    }
+
+    public void startPhase4() {
+        clearPhases();
+        // TODO: Cute piano cover of Bodily Exile
+        // WE MADE TIME
+        runningPhases.Add(StartCoroutine(PlayTrack(4, Track.Credits, 1)));
     }
 
 
     private IEnumerator PlayTrack(int phase, Track track, int sample) {
 
+        // Turn into zero-indexed for simpler array indexing.
+        sample -= 1;
+
         while(true) {
 
-            // Phase 0 has two vocals, so, attempt to play the two vocals
-            if (Markov.shouldPlay(phase, track, sample)) {
-                Debug.Log("ASDF Playing!");
-                audioSources[0].Play();
+            // Default curSource
+            AudioSource curSource = audioSources[0];
+
+            // Undo zero index for shouldPlay call
+            if (Markov.shouldPlay(phase, track, sample + 1)) {
+                switch (track) {
+                    case Track.ExileGuitar: {
+                        Debug.Log("[Markov] Playing ExileGuitar!");
+                        curSource = audioSources[0 + sample];
+                        curSource.Play();
+                        break;
+                    }
+                    case Track.ExileHarmony: {
+                        Debug.Log("[Markov] Playing ExileHarmony!");
+                        curSource = audioSources[EXILE_NUM_GUITAR + sample];
+                        curSource.Play();
+                        break;
+                    }
+                    case Track.ExileLead: {
+                        Debug.Log("[Markov] Playing ExileLead!");
+                        curSource = audioSources[EXILE_NUM_GUITAR + EXILE_NUM_HARMONY + sample];
+                        curSource.Play();
+                        break;
+                    }
+                    case Track.ExileWhisper: {
+                        Debug.Log("[Markov] Playing ExileWhisper!");
+                        curSource = audioSources[EXILE_NUM_GUITAR + EXILE_NUM_HARMONY + EXILE_NUM_LEAD + sample];
+                        curSource.Play();
+                        break;
+                    }
+                    case Track.BlueGuitar: {
+                        Debug.Log("[Markov] Playing BlueGuitar!");
+                        curSource = audioSources[EXILE_OFFSET + sample];
+                        curSource.Play();
+                        break;
+                    }
+                    case Track.BlueHarmony: {
+                        Debug.Log("[Markov] Playing BlueHarmony!");
+                        curSource = audioSources[EXILE_OFFSET + BLUE_NUM_GUITAR + sample];
+                        curSource.Play();
+                        break;
+                    }
+                    case Track.BlueLead: {
+                        Debug.Log("[Markov] Playing BlueLead!");
+                        curSource = audioSources[EXILE_OFFSET + BLUE_NUM_GUITAR + BLUE_NUM_HARMONY + sample];
+                        curSource.Play();
+                        break;
+                    }
+                    case Track.Credits: {
+                        Debug.Log("[Markov] Playing Credits!");
+                        curSource = audioSources[EXILE_OFFSET + BLUE_NUM_GUITAR + BLUE_NUM_HARMONY + + BLUE_NUM_LEAD + sample];
+                        curSource.Play();
+                        break;
+                    }
+                    default: {
+                        Debug.LogError("[Markov] Unable to play phase " + phase + ", track " + track + ", sample " + sample);
+                        break;
+                    }
+                }
             }
-            yield return new WaitForSeconds(audioSources[0].clip.length);
+
+            // Retrigger the current sample's chance to play
+            // at the end of every sample duration,
+            // regardless if it played on the current cycle or not.
+            yield return new WaitForSeconds(curSource.clip.length);
         }
     }
 
@@ -108,28 +249,57 @@ class MarkovTest: MonoBehaviour {
     private void loadAudioClips() {
         int offset = 0;
 
-        for (int i = 0; i < NUM_GUITAR; i++)   {
-            exileGuitarClips[i] = Resources.Load<AudioClip>("AudioStems/Guitar-" + (i + 1));
+        // MARK: Exile
+
+        for (int i = 0; i < EXILE_NUM_GUITAR; i++)   {
+            exileGuitarClips[i] = Resources.Load<AudioClip>("AudioStems/Exile/Guitar-" + (i + 1));
             audioSources[i].clip = exileGuitarClips[i];
         }
 
-        offset += NUM_GUITAR;
-        for (int i = 0; i < NUM_HARMONY; i++)  {
-            exileHarmonyClips[i] = Resources.Load<AudioClip>("AudioStems/Harmony-" + (i + 1));
+        offset += EXILE_NUM_GUITAR;
+        for (int i = 0; i < EXILE_NUM_HARMONY; i++)  {
+            exileHarmonyClips[i] = Resources.Load<AudioClip>("AudioStems/Exile/Harmony-" + (i + 1));
             audioSources[offset + i].clip = exileHarmonyClips[i];
         }
 
-        offset += NUM_HARMONY;
-        for (int i = 0; i < NUM_LEAD; i++)     {
-            exileLeadClips[i] = Resources.Load<AudioClip>("AudioStems/LeadVocal-" + (i + 1));
+        offset += EXILE_NUM_HARMONY;
+        for (int i = 0; i < EXILE_NUM_LEAD; i++)     {
+            exileLeadClips[i] = Resources.Load<AudioClip>("AudioStems/Exile/LeadVocal-" + (i + 1));
             audioSources[offset + i].clip = exileLeadClips[i];
         }
 
-        offset += NUM_LEAD;
-        for (int i = 0; i < NUM_WHISPERS; i++) {
-            exileWhispersClips[i] = Resources.Load<AudioClip>("AudioStems/Whispers-" + (i + 1));
+        offset += EXILE_NUM_LEAD;
+        for (int i = 0; i < EXILE_NUM_WHISPERS; i++) {
+            exileWhispersClips[i] = Resources.Load<AudioClip>("AudioStems/Exile/Whispers-" + (i + 1));
             audioSources[offset + i].clip = exileWhispersClips[i];
         }
+
+        offset += EXILE_NUM_WHISPERS;
+
+        // MARK: Blue
+
+        // Note: re-using above offset as `audioSources` is "globally" indexed
+        // between the two tracks.
+
+        for (int i = 0; i < BLUE_NUM_GUITAR; i++)   {
+            blueGuitarClips[i] = Resources.Load<AudioClip>("AudioStems/Blue/Guitar-" + (i + 1));
+            audioSources[offset + i].clip = blueGuitarClips[i];
+        }
+
+        offset += BLUE_NUM_GUITAR;
+        for (int i = 0; i < BLUE_NUM_HARMONY; i++)  {
+            blueHarmonyClips[i] = Resources.Load<AudioClip>("AudioStems/Blue/Harmony-" + (i + 1));
+            audioSources[offset + i].clip = blueHarmonyClips[i];
+        }
+
+        offset += BLUE_NUM_HARMONY;
+        for (int i = 0; i < BLUE_NUM_LEAD; i++)     {
+            blueLeadClips[i] = Resources.Load<AudioClip>("AudioStems/Blue/Lead-" + (i + 1));
+            audioSources[offset + i].clip = blueLeadClips[i];
+        }
+
+        credits[0] = Resources.Load<AudioClip>("AudioStems/Exile/credits");
+        audioSources[TOTAL_SOURCE - 1].clip = credits[0];
 
     }
 }
@@ -139,86 +309,185 @@ enum Track: int {
     ExileGuitar  = 0,
     ExileHarmony = 1,
     ExileLead    = 2,
-    ExileWhisper = 3
-    // TODO: More for MilkyBlue
+    ExileWhisper = 3,
+
+    BlueGuitar   = 4,
+    BlueHarmony  = 5,
+    BlueLead     = 6,
+
+    Credits      = 7
 }
 
 
 class Markov {
 
     static readonly double[,] phase0prob;
-    static readonly double[,] phase1prob;
-    static readonly double[,,] phases;
+    static readonly double[,] phase1part0prob;
+    static readonly double[,] phase1part1prob;
+    static readonly double[,] phase1part2prob;
+    static readonly double[,] phase2part0prob;
+    static readonly double[,] phase2part1prob;
+    static readonly double[,] phase2part2prob;
+    static readonly double[,] phase3prob;
+    static readonly double[,] phase4prob;
 
     static Markov() {
 
         // We need to create probability matrices
         // for *each* phase of the project.
 
-        // Phase 0 - (two vocals)
-        //           Very low probability of second vocal triggering.
+        // Phase 0 - (opening scene)
+        //           Nothing is playing.
         //
-        //  {                sample1 sample2 sample3
-        //   track1-vocals {   0.5     0.6    0.4    }
-        //   track2-vocals {   0.2     0.1    0.1    }
-        //  }
+        //  {}
         //
         //
-        phase0prob = new double[,] {{ 1.0, 0.6, 0.4 },
-                                    { 0.2, 0.9, 0.1 }};
+        phase0prob = new double[,] {{}};
 
 
         // Phase 1 - (two vocals + guitar)
         //           Two vocals interact w.h.p, guitar is constant
+        //           (flattened down)
+
+        // This needs to be this long as the sample is an absolute index,
+        // and writing code to convert this index would bring
+        // the total number of index-conversion functions up to 3,
+        // which is too damn high.
         //
-        //  {                  sample1 sample2 sample3
-        //   track1-lead     {   0.5     0.6    0.4    }
-        //   track2-harmony  {   0.5     0.4    0.1    }
-        //   guitar          {   0.8     0.2    0.0    }
-        //  }
-        //
-        //
-        phase1prob = new double[,] {{ 0.5, 0.6, 0.4 },
-                                    { 0.5, 0.4, 0.1 },
-                                    { 0.8, 0.2, 0.0 }};
+        //                                  1    2    3    4    5    6    7    8
+        phase1part0prob = new double[,] {{ 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  }, // blue-harmony
+                                         { 0.9, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  }, // exile-lead
+                                         { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, }, // exile-harmony
+                                         { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, }, // exile-whisper
+                                         { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0 }}; // exile-guitar
+
+        //                                  1    2    3    4    5    6    7    8
+        phase1part1prob = new double[,] {{ 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  }, // blue-harmony
+                                         { 0.9, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  }, // exile-lead
+                                         { 0.1, 0.3, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, }, // exile-harmony
+                                         { 0.0, 0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, }, // exile-whisper
+                                         { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0 }}; // exile-guitar
+
+        //                                  1    2    3    4    5    6    7    8
+        phase1part2prob = new double[,] {{ 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  }, // blue-harmony
+                                         { 0.9, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  }, // exile-lead
+                                         { 0.3, 0.3, 0.4, 0.3, 0.4, 0.5, 0.0, 0.0, }, // exile-harmony
+                                         { 0.0, 0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, }, // exile-whisper
+                                         { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }}; // exile-guitar
 
 
         // Phase 2 - (two vocals + guitar + other vocals )
         //           Two vocals interact w.h.p, guitar is constant
         //
-        //  {                  sample1 sample2 sample3
-        //   track1-lead     {   0.5     0.6    0.4    }
-        //   track2-harmony  {   0.5     0.4    0.1    }
-        //   guitar          {   0.8     0.2    0.0    }
-        //   track2-harmony  {   0.5     0.4    0.1    }
-        //   track2-harmony  {   0.5     0.4    0.1    }
-        //   track2-harmony  {   0.5     0.4    0.1    }
-        //   track2-harmony  {   0.5     0.4    0.1    }
-        //  }
-        //
-        //
-        phase1prob = new double[,] {{ 0.5, 0.6, 0.4 },
-                                    { 0.5, 0.4, 0.1 },
-                                    { 0.8, 0.2, 0.0 }};
+        //                                  1    2    3    4    5    6    7    8
+        phase2part0prob = new double[,] {{ 0.2, 0.1, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0},  // exile-lead
+                                         { 0.4, 0.4, 0.1, 0.3, 0.5, 0.3, 0.0, 0.0},  // blue-harmony (same as 1x)
+                                         { 0.5, 0.4, 0.1, 0.3, 0.5, 0.3, 0.0, 0.0},  // exile-whisper
+                                         { 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0}}; // blue-guitar
+
+        //                                  1    2    3    4    5    6    7    8
+        phase2part1prob = new double[,] {{ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  // exile-lead
+                                         { 0.9, 1.0, 0.6, 0.8, 0.5, 0.7, 0.0, 0.0},  // blue-harmony (only harmony)
+                                         { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  // exile-whisper
+                                         { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}}; // blue-guitar
+
+        //                                  1    2    3    4    5    6    7    8
+        phase2part2prob = new double[,] {{ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  // exile-lead
+                                         { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  // blue-harmony
+                                         { 1.0, 0.9, 0.9, 0.0, 0.0, 0.0, 0.0, 0.0},  // exile-whisper (only this)
+                                         { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}}; // blue-guitar
 
 
 
 
-        // phases = new double[,,] {phase0prob, phase1prob, {{}}};
-        // TODO: Add more as implemented.
+        // Phase 3 - Just harmony
+        //                             1    2    3    4    5    6    7    8
+        phase3prob = new double[,] {{ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.9, 1.0 }, // exile-harmony
+                                    { 0.0, 0.0, 0.0, 0.0, 0.3, 0.1, 0.0, 0.0 }}; // blue-harmony
+
+
+        phase4prob = new double[,] {{ 1.0 }}; // credits
+
+
     }
 
+    /// Determines if a given track+sample should be played
+    /// on a phase.
+    ///
+    /// Note: Samples are NOT ZERO INDEXED.
     public static bool shouldPlay(int phase, Track track, int sample) {
 
-        // FIXME: sample vs. track audiosources (needs med refactor)
-        // FIXME: Global indices for track values vs. per-phase index
         // TODO: make dynamic phases (see constructor)
+        // TODO: Clip Delays??
+        //  -- opt1: Manualy re-export sound to include fixed delay
+        //  -- opt2: PlayScheduled api >:(
+        //  -- opt3: Thread.sleep
+        //  -- opt4: The church down the street has a Friday service
 
-        // TODO: Determine phase indexing
+        var index = mapTrackToIndex(track, phase);
+        if (index == -1) {
+            Debug.LogError("[Markov] Invalid index for phase" + phase + ", track " + track + ", sample " + sample);
+            return false;
+        }
 
-        double curProb = phase0prob[(int) track, sample];
+        // Debug.Log("[Markov] phase " + phase + ", track " + track + ", sample " + sample);
+        double curProb = 0.0;
+        double[,] curProbArr = phase0prob;
+
+        // Pick prob array to use
+        switch (phase) {
+            // [phase][index], so, 11 is phase1part1
+            // Index not defined for single-part phases
+            case 0:  curProbArr  = phase0prob;      break;
+            case 10: curProbArr  = phase1part0prob; break;
+            case 11: curProbArr  = phase1part1prob; break;
+            case 12: curProbArr  = phase1part2prob; break;
+            case 20: curProbArr  = phase2part0prob; break;
+            case 21: curProbArr  = phase2part1prob; break;
+            case 22: curProbArr  = phase2part2prob; break;
+            case 3:  curProbArr  = phase3prob;      break;
+            case 4:  curProbArr  = phase4prob;      break;
+            default: break;
+        }
+
+        // Retrieve probability from array
+        curProb = curProbArr[index, sample - 1];
+
         var randVal = Random.value;
         return randVal <= curProb;
     }
 
+    /// A little hacky -- maps track indices to the probability matrices defined
+    /// manually in the constructor.
+    private static int mapTrackToIndex(Track track, int phase) {
+        if (phase == 10 || phase == 11 || phase == 12) {
+            switch (track) {
+                case Track.BlueHarmony:  { return 0; break; }
+                case Track.ExileLead:    { return 1; break; }
+                case Track.ExileHarmony: { return 2; break; }
+                case Track.ExileWhisper: { return 3; break; }
+                case Track.ExileGuitar:  { return 4; break; }
+                default: break;
+            }
+        } else if (phase == 20 || phase == 21 || phase == 22) {
+            switch (track) {
+                case Track.ExileLead:    { return 0; break; }
+                case Track.BlueHarmony:  { return 1; break; }
+                case Track.ExileWhisper: { return 2; break; }
+                case Track.BlueGuitar:   { return 3; break; }
+                default: break;
+            }
+        } else if (phase == 3) {
+            switch (track) {
+                case Track.ExileHarmony: { return 0; break; }
+                case Track.BlueHarmony:  { return 1; break; }
+                default: break;
+            }
+        } else if (phase == 4) {
+            switch (track) {
+                case Track.Credits: { return 0; break; }
+            }
+        }
+        return 0;
+    }
 }
