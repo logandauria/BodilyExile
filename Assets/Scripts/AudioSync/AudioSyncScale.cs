@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Allows scale changes to be synced to audio beats based on provided inspector values
 public class AudioSyncScale : AudioSyncer {
 
 
@@ -9,8 +10,14 @@ public class AudioSyncScale : AudioSyncer {
 	// the script instead increases the object based on the beatScale alone, using it as a percentage increase.
 	// WARNING: Setting to true causes scale to increase by the percentage representation of beatScale
 	public bool WorkWithChangingScale = false;
+	// initial scale of object
 	private Vector3 initScale;
+
 	private float scaleTimer;
+	// Scale to lerp to on beat
+	public Vector3 beatScale;
+	// Scale to lerp to off beat
+	public Vector3 restScale;
 
 
 	void Start()
@@ -87,7 +94,4 @@ public class AudioSyncScale : AudioSyncer {
 		StopCoroutine("MoveToScale");
 		StartCoroutine("MoveToScale", beatScale);
 	}
-
-	public Vector3 beatScale;
-	public Vector3 restScale;
 }

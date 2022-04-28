@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
 
-
+// Apply a random particle velocity on triggered audio beats
 public class VFXSyncRandVelocity : AudioSyncer
 {
 
@@ -18,7 +18,9 @@ public class VFXSyncRandVelocity : AudioSyncer
 
 	private float timer = 0;
 
-
+	/// <summary>
+    /// When trigger time for random velocity is over, set it back to its initial state
+    /// </summary>
 	public override void OnUpdate()
 	{
 		base.OnUpdate();
@@ -30,12 +32,14 @@ public class VFXSyncRandVelocity : AudioSyncer
 		}
 	}
 
+	/// <summary>
+    /// When a beat is triggered, create a new random velocity vector and apply it to the VFX
+    /// </summary>
 	public override void OnBeat()
 	{
 		base.OnBeat();
 		Vector3 vel = new Vector3(Random.Range(beatVelocityLB.x, beatVelocityUB.x), Random.Range(beatVelocityLB.x, beatVelocityUB.x), Random.Range(beatVelocityLB.x, beatVelocityUB.x));
 		vfx.SetVector3("randvel", vel);
-
 	}
 
 	public void Start()
