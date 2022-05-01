@@ -1,5 +1,10 @@
 # SallyProject
 
+## Demo video  
+
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/SxhDV1TMi4Q/0.jpg)](https://www.youtube.com/watch?v=SxhDV1TMi4Q)  
+
+
 ## Setting up for development
 The unity project uses version 2022.1.0b9 so make sure you download the proper unity installation.
 
